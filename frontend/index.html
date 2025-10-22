@@ -113,7 +113,7 @@
                     <div class="hidden md:flex items-center space-x-1">
                         <button @click="navigateTo('dashboard')" 
                                 :class="currentPage === 'dashboard' ? 'bg-primary-100 text-primary-700' : 'text-gray-600 hover:text-primary-600'"
-                                class="px-4 py-2 rounded-lg font-medium transition-colors">
+                                class="px-4 py-2 rounded-lg font-medium transition-colors" style="display:none !important">
                             Dashboard
                         </button>
                         <button @click="navigateTo('search')" 
@@ -123,7 +123,7 @@
                         </button>
                         <button @click="navigateTo('intelligence')" 
                                 :class="currentPage === 'intelligence' ? 'bg-primary-100 text-primary-700' : 'text-gray-600 hover:text-primary-600'"
-                                class="px-4 py-2 rounded-lg font-medium transition-colors">
+                                class="px-4 py-2 rounded-lg font-medium transition-colors" style="display:none !important">
                             Intelligence
                         </button>
                     </div>
@@ -272,7 +272,7 @@
                     <div class="px-2 pt-2 pb-3 space-y-1">
                         <button @click="navigateTo('dashboard')" 
                                 :class="currentPage === 'dashboard' ? 'bg-primary-100 text-primary-700' : 'text-gray-600'"
-                                class="block w-full text-left px-3 py-2 rounded-lg font-medium transition-colors">
+                                class="block w-full text-left px-3 py-2 rounded-lg font-medium transition-colors" style="display:none !important">
                             📊 Dashboard
                         </button>
                         <button @click="navigateTo('search')" 
@@ -282,7 +282,7 @@
                         </button>
                         <button @click="navigateTo('intelligence')" 
                                 :class="currentPage === 'intelligence' ? 'bg-primary-100 text-primary-700' : 'text-gray-600'"
-                                class="block w-full text-left px-3 py-2 rounded-lg font-medium transition-colors">
+                                class="block w-full text-left px-3 py-2 rounded-lg font-medium transition-colors" style="display:none !important">
                             🎯 Intelligence
                         </button>
                     </div>
