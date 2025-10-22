@@ -1,0 +1,31 @@
+analysis:
+  analyzer:
+    tender_analyzer:
+      filter:
+      - lowercase
+      - asciifolding
+      - tender_synonyms
+      tokenizer: standard
+  filter:
+    tender_synonyms:
+      synonyms_path: analysis/synonyms.txt
+      type: synonym_graph
+cluster:
+  initial_master_nodes:
+  - opensearch-node1
+  name: opensearch-tender-cluster
+discovery:
+  type: single-node
+http:
+  port: 9200
+network:
+  host: localhost
+node:
+  name: opensearch-node1
+  roles:
+  - master
+  - data
+  - ingest
+plugins:
+  security:
+    disabled: true

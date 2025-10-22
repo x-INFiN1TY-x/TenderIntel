@@ -1,0 +1,168 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tenderintel"
+version = "1.0.0"
+description = "AI-powered competitive intelligence platform for government procurement analysis"
+readme = "README.md"
+authors = [
+    {name = "TenderIntel Team", email = "team@tenderintel.org"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Indexing",
+]
+keywords = [
+    "government-procurement", "competitive-intelligence", "tender-analysis", 
+    "cppp-scraping", "gem-portal", "business-intelligence", "ai-search",
+    "synonym-expansion", "bm25-ranking", "procurement-analytics"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "sqlite-fts4>=1.0.3",
+    "selenium>=4.15.0",
+    "beautifulsoup4>=4.12.0",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "pydantic>=2.4.0",
+    "python-multipart>=0.0.6",
+    "jinja2>=3.1.2",
+    "aiohttp>=3.9.0",
+    "python-dateutil>=2.8.0",
+    "pyyaml>=6.0"
+]
+
+[project.optional-dependencies]
+# OpenSearch Enhancement (Optional - for large-scale deployments)
+opensearch = [
+    "opensearch-py>=2.3.0"
+]
+
+# TenderX Integration Dependencies
+tenderx = [
+    "pytesseract>=0.3.10",
+    "pillow>=10.0.0",
+    "opencv-python>=4.8.0",
+    "webdriver-manager>=4.0.0",
+    "boto3>=1.34.0",
+    "supabase>=2.0.0",
+    "psycopg2-binary>=2.9.0"
+]
+
+# Development Dependencies  
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.3.0"
+]
+
+# Documentation Dependencies
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.2.0",
+    "mkdocstrings>=0.23.0"
+]
+
+# Production Deployment
+prod = [
+    "gunicorn>=21.2.0",
+    "redis>=5.0.0",
+    "celery>=5.3.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/tenderintel/tenderintel"
+Documentation = "https://tenderintel.readthedocs.io/"
+Repository = "https://github.com/tenderintel/tenderintel.git"
+"Bug Tracker" = "https://github.com/tenderintel/tenderintel/issues"
+
+[project.scripts]
+tenderintel-api = "tenderintel.api.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+tenderintel = [
+    "config/*.yaml",
+    "config/*.json", 
+    "data/schemas/*.json",
+    "ui/static/**/*",
+    "ui/templates/**/*"
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Directories
+  \.git
+  | \.mypy_cache
+  | \.pytest_cache
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+python_classes = "Test*"
+addopts = "--cov=src/tenderintel --cov-report=html --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["src/tenderintel"]
+omit = [
+    "tests/*",
+    "src/tenderintel/cli.py"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:"
+]

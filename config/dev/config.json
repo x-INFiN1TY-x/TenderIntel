@@ -1,0 +1,30 @@
+{
+  "database": {
+    "path": "data/tenders.db",
+    "engine": "sqlite_fts5"
+  },
+  "search": {
+    "max_results": 100,
+    "default_similarity_threshold": 0.0,
+    "enable_debug": true
+  },
+  "scraping": {
+    "cppp": {
+      "base_url": "https://etenders.gov.in",
+      "max_pages": 5,
+      "rate_limit_delay": 1.0,
+      "enable_captcha": false
+    },
+    "gem": {
+      "base_url": "https://gem.gov.in",
+      "max_contracts": 100,
+      "rate_limit_delay": 0.5
+    }
+  },
+  "api": {
+    "host": "0.0.0.0",
+    "port": 8000,
+    "reload": true,
+    "log_level": "info"
+  }
+}

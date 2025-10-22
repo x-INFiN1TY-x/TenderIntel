@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tender Search PoC</title>
+    <style>
+        /* Modern, clean design for professional PoC demonstration */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .search-section {
+            padding: 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+        
+        .expansion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            min-height: 35px;
+        }
+        
+        .chip {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid #bbdefb;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        .chip.domain-networking { background: #e8f5e8; color: #2e7d32; border-color: #c8e6c9; }
+        .chip.domain-security { background: #fce4ec; color: #c2185b; border-color: #f8bbd9; }
+        .chip.domain-cloud { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; }
+        .chip.domain-database { background: #e0f2f1; color: #00695c; border-color: #b2dfdb; }
+        
+        .results-section {
+            padding: 40px;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .results-info {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .execution-time {
+            font-size: 0.9rem;
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .results-table th {
+            background: #34495e;
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .results-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+        
+        .results-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .title-cell {
+            font-weight: 600;
+            color: #2c3e50;
+            max-width: 400px;
+        }
+        
+        .org-cell {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .similarity-cell {
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .similarity-bar {
+            width: 80px;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .similarity-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .similarity-high { background: #28a745; }
+        .similarity-medium { background: #ffc107; color: #333; }
+        .similarity-low { background: #6c757d; }
+        
+        .matched-phrases {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 5px;
+        }
+        
+        .matched-phrase {
+            background: #d4edda;
+            color: #155724;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .portal-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 5px 10px;
+            border: 1px solid #667eea;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .portal-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        .error-state {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .demo-suggestions {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #bee5eb;
+        }
+        
+        .demo-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .demo-keyword {
+            background: #17a2b8;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .demo-keyword:hover {
+            background: #138496;
+            transform: translateY(-1px);
+        }
+        
+        /* Enhanced Filter Controls */
+        .filters-section {
+            background: #f1f3f4;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .filters-header h4 {
+            margin: 0;
+            color: #495057;
+        }
+        
+        .filter-toggle {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .filter-toggle:hover {
+            background: #5a6268;
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+            font-size: 0.9rem;
+        }
+        
+        .filter-select {
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background: white;
+            font-size: 0.85rem;
+            min-height: 35px;
+        }
+        
+        .filter-input {
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .filter-range {
+            margin-bottom: 5px;
+        }
+        
+        .filters-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .apply-filters-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .apply-filters-btn:hover {
+            background: #218838;
+        }
+        
+        .toggle-filters-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .filter-toggle-btn, .load-test-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-toggle-btn:hover, .load-test-btn:hover {
+            background: #138496;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive design for demo flexibility */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .search-section, .results-section {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .results-table {
+                font-size: 0.85rem;
+            }
+            
+            .results-table th,
+            .results-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Smart Tender Search</h1>
+            <p>Intelligent Government Procurement Analytics • Proof of Concept</p>
+        </div>
+        
+        <div class="search-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="Enter keyword (e.g., lan, api, waf, iam, siem)..."
+                    autocomplete="off"
+                >
+                <button class="search-button" onclick="performSearch()">Search</button>
+            </div>
+            
+            <div class="expansion-chips" id="expansionChips">
+                <!-- Expansion phrases will appear here -->
+            </div>
+            
+            <!-- Advanced Filtering Controls -->
+            <div class="filters-section" id="filtersSection" style="display: none;">
+                <div class="filters-header">
+                    <h4>🔍 Advanced Filters</h4>
+                    <button class="filter-toggle" onclick="clearAllFilters()">Clear All</button>
+                </div>
+                
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Service Categories:</label>
+                        <select id="serviceCategoryFilter" multiple class="filter-select">
+                            <!-- Options loaded dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Organizations:</label>
+                        <select id="organizationFilter" multiple class="filter-select">
+                            <!-- Options loaded dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Regions:</label>
+                        <select id="regionFilter" multiple class="filter-select">
+                            <!-- Options loaded dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Value Range:</label>
+                        <select id="valueRangeFilter" multiple class="filter-select">
+                            <!-- Options loaded dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Date Range:</label>
+                        <input type="date" id="dateFromFilter" class="filter-input">
+                        <input type="date" id="dateToFilter" class="filter-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Min Similarity:</label>
+                        <input type="range" id="similarityFilter" min="0" max="100" value="0" class="filter-range">
+                        <span id="similarityValue">0%</span>
+                    </div>
+                </div>
+                
+                <div class="filters-actions">
+                    <button class="apply-filters-btn" onclick="applyFilters()">Apply Filters</button>
+                    <button class="toggle-filters-btn" onclick="toggleAdvancedFilters()">Hide Filters</button>
+                </div>
+            </div>
+
+            <div class="demo-suggestions">
+                <strong>🎯 Demo Keywords:</strong> Try these technical terms to see intelligent expansion and disambiguation
+                <div class="demo-keywords">
+                    <span class="demo-keyword" onclick="searchKeyword('lan')">lan</span>
+                    <span class="demo-keyword" onclick="searchKeyword('api')">api</span>
+                    <span class="demo-keyword" onclick="searchKeyword('waf')">waf</span>
+                    <span class="demo-keyword" onclick="searchKeyword('iam')">iam</span>
+                    <span class="demo-keyword" onclick="searchKeyword('siem')">siem</span>
+                    <span class="demo-keyword" onclick="searchKeyword('cloud')">cloud</span>
+                    <span class="demo-keyword" onclick="searchKeyword('database')">database</span>
+                    <span class="demo-keyword" onclick="searchKeyword('security')">security</span>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <button class="filter-toggle-btn" onclick="toggleAdvancedFilters()">🔧 Advanced Filters</button>
+                    <button class="load-test-btn" onclick="runLoadTest()">⚡ Load Test</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="results-header" id="resultsHeader" style="display: none;">
+                <div class="results-info" id="resultsInfo">
+                    <!-- Results count and query info -->
+                </div>
+                <div class="execution-time" id="executionTime">
+                    <!-- Query execution time -->
+                </div>
+            </div>
+            
+            <div id="resultsContainer">
+                <!-- Search results will appear here -->
+                <div class="empty-state">
+                    <h3>🔍 Ready to Search</h3>
+                    <p>Enter a technical keyword above to see intelligent search expansion in action.</p>
+                    <p><strong>Key Features:</strong></p>
+                    <ul style="text-align: left; display: inline-block; margin-top: 15px;">
+                        <li>Expands short acronyms: "lan" → "local area network", "layer 2 switch"</li>
+                        <li>Avoids false positives: "lan" won't match "land development"</li>
+                        <li>BM25 relevance scoring with similarity percentages</li>
+                        <li>Direct links to original government portals</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state management
+        let currentQuery = '';
+        let searchTimeout = null;
+        let expansionData = null;
+        
+        // API configuration
+        const API_BASE = 'http://localhost:8000';
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            
+            // Real-time search with debouncing
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.trim();
+                
+                // Clear previous timeout
+                if (searchTimeout) {
+                    clearTimeout(searchTimeout);
+                }
+                
+                // Debounce search for better UX
+                if (query.length >= 2) {
+                    searchTimeout = setTimeout(() => {
+                        performSearch(query);
+                    }, 300);
+                } else {
+                    clearResults();
+                }
+            });
+            
+            // Enter key support
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // Focus on search input
+            searchInput.focus();
+        });
+        
+        function searchKeyword(keyword) {
+            document.getElementById('searchInput').value = keyword;
+            performSearch(keyword);
+        }
+        
+        async function performSearch(query = null) {
+            const searchInput = document.getElementById('searchInput');
+            const keyword = query || searchInput.value.trim();
+            
+            if (!keyword) {
+                clearResults();
+                return;
+            }
+            
+            currentQuery = keyword;
+            showLoadingState();
+            
+            try {
+                // Step 1: Get keyword expansion
+                const expansionResponse = await fetch(`${API_BASE}/expand?q=${encodeURIComponent(keyword)}&debug=true`);
+                if (!expansionResponse.ok) {
+                    throw new Error(`Expansion failed: ${expansionResponse.status}`);
+                }
+                
+                expansionData = await expansionResponse.json();
+                displayExpansionChips(expansionData);
+                
+                // Step 2: Execute search
+                const searchResponse = await fetch(`${API_BASE}/search?q=${encodeURIComponent(keyword)}&debug=true&limit=50`);
+                if (!searchResponse.ok) {
+                    throw new Error(`Search failed: ${searchResponse.status}`);
+                }
+                
+                const searchData = await searchResponse.json();
+                displaySearchResults(searchData);
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                showErrorState(error.message);
+            }
+        }
+        
+        function displayExpansionChips(expansionData) {
+            const chipsContainer = document.getElementById('expansionChips');
+            chipsContainer.innerHTML = '';
+            
+            if (expansionData.phrases && expansionData.phrases.length > 0) {
+                // Add query info chip
+                const queryChip = document.createElement('div');
+                queryChip.className = 'chip';
+                queryChip.innerHTML = `<strong>"${expansionData.query}"</strong> expands to:`;
+                chipsContainer.appendChild(queryChip);
+                
+                // Add expansion phrase chips with domain coloring
+                expansionData.phrases.forEach(phrase => {
+                    const chip = document.createElement('div');
+                    chip.className = `chip domain-${expansionData.domain || 'general'}`;
+                    chip.textContent = phrase;
+                    chipsContainer.appendChild(chip);
+                });
+                
+                // Add confidence indicator
+                if (expansionData.confidence) {
+                    const confidenceChip = document.createElement('div');
+                    confidenceChip.className = 'chip';
+                    confidenceChip.innerHTML = `📊 Confidence: ${Math.round(expansionData.confidence * 100)}%`;
+                    chipsContainer.appendChild(confidenceChip);
+                }
+            }
+        }
+        
+        function displaySearchResults(searchData) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsHeader = document.getElementById('resultsHeader');
+            const resultsInfo = document.getElementById('resultsInfo');
+            const executionTime = document.getElementById('executionTime');
+            
+            // Update results header
+            resultsInfo.innerHTML = `
+                Found <strong>${searchData.total_matches}</strong> matches for 
+                "<strong>${searchData.query}</strong>" 
+                (Domain: <span class="domain-${searchData.domain || 'general'}">${searchData.domain || 'general'}</span>)
+            `;
+            
+            executionTime.textContent = `⚡ ${searchData.execution_time_ms}ms`;
+            resultsHeader.style.display = 'flex';
+            
+            if (searchData.hits && searchData.hits.length > 0) {
+                // Create results table
+                const table = document.createElement('table');
+                table.className = 'results-table';
+                
+                // Table header
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Title</th>
+                            <th style="width: 25%;">Organization</th>
+                            <th style="width: 10%;">Date</th>
+                            <th style="width: 12%;">Similarity</th>
+                            <th style="width: 13%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                    </tbody>
+                `;
+                
+                const tbody = table.querySelector('#resultsTableBody');
+                
+                // Populate results
+                searchData.hits.forEach((hit, index) => {
+                    const row = document.createElement('tr');
+                    
+                    // Similarity class for color coding
+                    let similarityClass = 'similarity-low';
+                    if (hit.similarity_percent >= 80) similarityClass = 'similarity-high';
+                    else if (hit.similarity_percent >= 60) similarityClass = 'similarity-medium';
+                    
+                    row.innerHTML = `
+                        <td class="title-cell">
+                            <div>${hit.title}</div>
+                            <div class="matched-phrases">
+                                ${hit.matched_phrases.map(phrase => 
+                                    `<span class="matched-phrase">${phrase}</span>`
+                                ).join('')}
+                            </div>
+                        </td>
+                        <td class="org-cell">${hit.org}</td>
+                        <td>${formatDate(hit.aoc_date)}</td>
+                        <td class="similarity-cell">
+                            <div class="similarity-bar">
+                                <div class="similarity-fill ${similarityClass}" style="width: ${hit.similarity_percent}%;">
+                                    ${hit.similarity_percent}%
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="${hit.url}" target="_blank" class="portal-link">
+                                View Original
+                            </a>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+                
+                resultsContainer.innerHTML = '';
+                resultsContainer.appendChild(table);
+                
+                // Add performance and quality metrics
+                const metricsDiv = document.createElement('div');
+                metricsDiv.innerHTML = `
+                    <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 0.9rem;">
+                        <strong>🎯 Search Quality Metrics:</strong>
+                        <span style="margin-left: 20px;">Domain: ${searchData.domain}</span>
+                        <span style="margin-left: 20px;">Confidence: ${Math.round(searchData.confidence * 100)}%</span>
+                        <span style="margin-left: 20px;">Query: ${searchData.fts5_query || 'N/A'}</span>
+                        ${searchData.debug_info ? `<span style="margin-left: 20px;">Debug: Available</span>` : ''}
+                    </div>
+                `;
+                resultsContainer.appendChild(metricsDiv);
+                
+            } else {
+                // No results found
+                resultsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>🔍 No Results Found</h3>
+                        <p>No tenders found for "<strong>${searchData.query}</strong>" and its expansions:</p>
+                        <p><em>${searchData.phrases.join(', ')}</em></p>
+                        <p>Try different keywords like: lan, api, waf, iam, siem</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function showLoadingState() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = `
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <h3>🔍 Searching...</h3>
+                    <p>Expanding keywords and searching tender database...</p>
+                </div>
+            `;
+        }
+        
+        function showErrorState(errorMessage) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = `
+                <div class="error-state">
+                    <h3>❌ Search Error</h3>
+                    <p><strong>Error:</strong> ${errorMessage}</p>
+                    <p><strong>Query:</strong> "${currentQuery}"</p>
+                    <p>Please check that the API service is running and try again.</p>
+                </div>
+            `;
+            document.getElementById('resultsHeader').style.display = 'none';
+        }
+        
+        function clearResults() {
+            document.getElementById('resultsContainer').innerHTML = `
+                <div class="empty-state">
+                    <h3>🔍 Ready to Search</h3>
+                    <p>Enter a technical keyword above to see intelligent search expansion in action.</p>
+                </div>
+            `;
+            document.getElementById('resultsHeader').style.display = 'none';
+            document.getElementById('expansionChips').innerHTML = '';
+        }
+        
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-IN', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        // Utility function for demo purposes - test all scenarios
+        async function runDemoTest() {
+            try {
+                const response = await fetch(`${API_BASE}/test-demo-scenarios`);
+                const data = await response.json();
+                console.log('Demo Test Results:', data);
+                
+                if (data.demo_validation.success_rate >= 80) {
+                    alert(`✅ Demo Ready! Success Rate: ${data.demo_validation.success_rate}%`);
+                } else {
+                    alert(`⚠️ Demo Issues Detected. Success Rate: ${data.demo_validation.success_rate}%`);
+                }
+            } catch (error) {
+                console.error('Demo test failed:', error);
+                alert('❌ Demo test failed. Check console for details.');
+            }
+        }
+        
+        // Enhanced Filter Functionality
+        let filterOptions = null;
+        let filtersVisible = false;
+        
+        async function loadFilterOptions() {
+            try {
+                const response = await fetch(`${API_BASE}/filter-options`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    filterOptions = data.filter_options;
+                    populateFilterDropdowns();
+                }
+            } catch (error) {
+                console.error('Failed to load filter options:', error);
+            }
+        }
+        
+        function populateFilterDropdowns() {
+            if (!filterOptions) return;
+            
+            // Populate service categories
+            const serviceCategorySelect = document.getElementById('serviceCategoryFilter');
+            serviceCategorySelect.innerHTML = '';
+            filterOptions.service_categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.value;
+                option.textContent = `${cat.label} (${cat.count})`;
+                serviceCategorySelect.appendChild(option);
+            });
+            
+            // Populate organizations (top 20)
+            const orgSelect = document.getElementById('organizationFilter');
+            orgSelect.innerHTML = '';
+            filterOptions.organizations.slice(0, 20).forEach(org => {
+                const option = document.createElement('option');
+                option.value = org.value;
+                option.textContent = `${org.label} (${org.count})`;
+                orgSelect.appendChild(option);
+            });
+            
+            // Populate regions
+            const regionSelect = document.getElementById('regionFilter');
+            regionSelect.innerHTML = '';
+            filterOptions.regions.forEach(region => {
+                const option = document.createElement('option');
+                option.value = region.value;
+                option.textContent = `${region.label} (${region.count})`;
+                regionSelect.appendChild(option);
+            });
+            
+            // Populate value ranges
+            const valueRangeSelect = document.getElementById('valueRangeFilter');
+            valueRangeSelect.innerHTML = '';
+            filterOptions.value_ranges.forEach(vr => {
+                const option = document.createElement('option');
+                option.value = vr.value;
+                option.textContent = `${vr.label} (${vr.count})`;
+                valueRangeSelect.appendChild(option);
+            });
+            
+            // Set up date range defaults
+            if (filterOptions.date_range) {
+                document.getElementById('dateFromFilter').max = filterOptions.date_range.max_date;
+                document.getElementById('dateFromFilter').min = filterOptions.date_range.min_date;
+                document.getElementById('dateToFilter').max = filterOptions.date_range.max_date;
+                document.getElementById('dateToFilter').min = filterOptions.date_range.min_date;
+            }
+        }
+        
+        function toggleAdvancedFilters() {
+            const filtersSection = document.getElementById('filtersSection');
+            filtersVisible = !filtersVisible;
+            
+            if (filtersVisible) {
+                filtersSection.style.display = 'block';
+                loadFilterOptions(); // Load options when first showing
+                document.querySelector('.filter-toggle-btn').textContent = '🔧 Hide Filters';
+            } else {
+                filtersSection.style.display = 'none';
+                document.querySelector('.filter-toggle-btn').textContent = '🔧 Advanced Filters';
+            }
+        }
+        
+        function clearAllFilters() {
+            // Clear all filter selections
+            document.getElementById('serviceCategoryFilter').selectedIndex = -1;
+            document.getElementById('organizationFilter').selectedIndex = -1;
+            document.getElementById('regionFilter').selectedIndex = -1;
+            document.getElementById('valueRangeFilter').selectedIndex = -1;
+            document.getElementById('dateFromFilter').value = '';
+            document.getElementById('dateToFilter').value = '';
+            document.getElementById('similarityFilter').value = 0;
+            document.getElementById('similarityValue').textContent = '0%';
+        }
+        
+        async function applyFilters() {
+            const keyword = currentQuery || document.getElementById('searchInput').value.trim();
+            
+            if (!keyword) {
+                alert('Please enter a search keyword first');
+                return;
+            }
+            
+            // Gather filter values
+            const filters = {
+                service_categories: Array.from(document.getElementById('serviceCategoryFilter').selectedOptions).map(opt => opt.value),
+                organizations: Array.from(document.getElementById('organizationFilter').selectedOptions).map(opt => opt.value),
+                regions: Array.from(document.getElementById('regionFilter').selectedOptions).map(opt => opt.value),
+                value_ranges: Array.from(document.getElementById('valueRangeFilter').selectedOptions).map(opt => opt.value),
+                date_from: document.getElementById('dateFromFilter').value,
+                date_to: document.getElementById('dateToFilter').value,
+                min_similarity: document.getElementById('similarityFilter').value
+            };
+            
+            // Build query parameters
+            const params = new URLSearchParams();
+            params.append('q', keyword);
+            params.append('limit', '50');
+            params.append('debug', 'true');
+            
+            if (filters.service_categories.length > 0) {
+                params.append('service_categories', filters.service_categories.join(','));
+            }
+            if (filters.organizations.length > 0) {
+                params.append('organizations', filters.organizations.join(','));
+            }
+            if (filters.regions.length > 0) {
+                params.append('regions', filters.regions.join(','));
+            }
+            if (filters.value_ranges.length > 0) {
+                params.append('value_ranges', filters.value_ranges.join(','));
+            }
+            if (filters.date_from) {
+                params.append('date_from', filters.date_from);
+            }
+            if (filters.date_to) {
+                params.append('date_to', filters.date_to);
+            }
+            if (filters.min_similarity > 0) {
+                params.append('min_similarity', filters.min_similarity);
+            }
+            
+            showLoadingState();
+            
+            try {
+                // Execute filtered search
+                const response = await fetch(`${API_BASE}/search-filtered?${params.toString()}`);
+                const searchData = await response.json();
+                
+                // Add filter information to results
+                searchData.filters_applied = filters;
+                displaySearchResults(searchData);
+                
+            } catch (error) {
+                console.error('Filtered search error:', error);
+                showErrorState(error.message);
+            }
+        }
+        
+        async function runLoadTest() {
+            try {
+                showLoadingState();
+                
+                const response = await fetch(`${API_BASE}/load-test-quick`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        concurrent_users: 5,
+                        requests_per_user: 10,
+                        api_base_url: API_BASE
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Load test failed: ${response.status}`);
+                }
+                
+                const loadTestData = await response.json();
+                displayLoadTestResults(loadTestData);
+                
+            } catch (error) {
+                console.error('Load test error:', error);
+                alert(`Load test failed: ${error.message}`);
+                clearResults();
+            }
+        }
+        
+        function displayLoadTestResults(loadTestData) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            resultsContainer.innerHTML = `
+                <div style="padding: 20px; background: #e8f5e9; border-radius: 8px;">
+                    <h3>⚡ Load Test Results</h3>
+                    <div style="margin-top: 15px; font-family: monospace;">
+                        <p><strong>Concurrent Users:</strong> ${loadTestData.concurrent_users}</p>
+                        <p><strong>Total Requests:</strong> ${loadTestData.total_requests}</p>
+                        <p><strong>Success Rate:</strong> ${loadTestData.success_rate}%</p>
+                        <p><strong>Average Response Time:</strong> ${loadTestData.avg_response_time}ms</p>
+                        <p><strong>P95 Response Time:</strong> ${loadTestData.p95_response_time}ms</p>
+                        <p><strong>Throughput:</strong> ${loadTestData.requests_per_second} RPS</p>
+                        <p><strong>Performance Grade:</strong> ${loadTestData.performance_grade}</p>
+                    </div>
+                    <button onclick="clearResults()" style="margin-top: 15px; padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Back to Search</button>
+                </div>
+            `;
+            
+            document.getElementById('resultsHeader').style.display = 'none';
+        }
+        
+        // Update similarity range value display
+        document.addEventListener('DOMContentLoaded', function() {
+            const similarityRange = document.getElementById('similarityFilter');
+            const similarityValue = document.getElementById('similarityValue');
+            
+            if (similarityRange && similarityValue) {
+                similarityRange.addEventListener('input', function() {
+                    similarityValue.textContent = this.value + '%';
+                });
+            }
+        });
+        
+        // Add keyboard shortcuts for demo
+        document.addEventListener('keydown', function(e) {
+            // Alt+T for demo test
+            if (e.altKey && e.key === 't') {
+                e.preventDefault();
+                runDemoTest();
+            }
+            
+            // Alt+H for health check
+            if (e.altKey && e.key === 'h') {
+                e.preventDefault();
+                window.open(`${API_BASE}/health`, '_blank');
+            }
+            
+            // Alt+D for API docs  
+            if (e.altKey && e.key === 'd') {
+                e.preventDefault();
+                window.open(`${API_BASE}/docs`, '_blank');
+            }
+            
+            // Alt+F for advanced filters
+            if (e.altKey && e.key === 'f') {
+                e.preventDefault();
+                toggleAdvancedFilters();
+            }
+        });
+    </script>
+</body>
+</html>

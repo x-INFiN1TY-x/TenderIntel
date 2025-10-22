@@ -1,0 +1,43 @@
+
+# Smart Tender Search PoC - OpenSearch Synonyms
+# Multi-token synonym expansion for technical keywords
+
+# Networking
+lan,local area network,layer 2 switch,layer 3 switch,vlan,ethernet
+wan,wide area network,wan connectivity,internet connectivity
+vpn,virtual private network,site to site vpn,vpn gateway,ipsec
+dns,domain name system,name resolution,dns server
+router,network router,core router,edge router
+switch,network switch,managed switch,ethernet switch
+
+# Security  
+iam,identity and access management,user management,access control
+waf,web application firewall,application layer firewall,web protection
+siem,security information event management,security analytics,log correlation
+firewall,network firewall,packet filtering,network security
+soc,security operations center,security operations,cyber defense
+
+# Cloud Computing
+api,application programming interface,rest api,api gateway,openapi
+cloud,cloud computing,cloud infrastructure,cloud services
+saas,software as a service,cloud software,hosted application
+paas,platform as a service,cloud platform,development platform
+iaas,infrastructure as a service,cloud infrastructure,virtual machines
+
+# Database
+database,database management,data storage,database system
+sql,structured query language,relational database,sql database
+nosql,nosql database,document database,non relational database
+mysql,mysql database,open source database,relational database
+mongodb,document database,json database,nosql store
+
+# Enterprise Applications
+erp,enterprise resource planning,business management system
+crm,customer relationship management,sales management,customer management
+hrms,human resource management system,hr software,personnel management
+workflow,business workflow,process automation,task management
+
+# AI/ML
+ai,artificial intelligence,machine learning platform,ai platform
+ml,machine learning,model training platform,mlops platform
+nlp,natural language processing,text analytics,language processing

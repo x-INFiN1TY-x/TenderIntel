@@ -1,0 +1,101 @@
+# TenderIntel Configuration
+# Default configuration optimized for SQLite FTS5
+
+# Search Engine Configuration
+search:
+  # Search engine: 'sqlite' or 'opensearch'
+  # Default: sqlite (works immediately, no setup required)
+  engine: sqlite
+  
+  # Synonym expansion settings
+  synonyms:
+    file: config/synonyms.yaml
+    enable_auto_expansion: true
+    max_expansions: 6
+  
+  # SQLite FTS5 Configuration (Default Engine)
+  sqlite:
+    database_path: data/tenders.db
+    fts5_tokenizer: porter unicode61
+    enable_wal: true
+    cache_size_kb: 64000  # 64MB cache
+    mmap_size_mb: 256     # 256MB memory-mapped I/O
+    page_size: 4096
+    temp_store: memory
+    synchronous: normal
+    optimize_on_startup: true
+    connection_pool_size: 5
+  
+  # OpenSearch Configuration (Optional - only used if engine=opensearch)
+  # Leave this section as-is if you're not using OpenSearch
+  opensearch:
+    enabled: false  # Set to true to use OpenSearch
+    hosts:
+      - host: localhost
+        port: 9200
+    use_ssl: false
+    verify_certs: false
+    timeout: 30
+    max_retries: 3
+    index_prefix: tenders
+    shards: 2
+    replicas: 1
+
+# Performance Configuration
+performance:
+  query_timeout: 30
+  max_search_results: 100
+  default_search_results: 25
+  enable_response_cache: true
+  cache_ttl_seconds: 300
+
+# API Configuration
+api:
+  host: 0.0.0.0
+  port: 8000
+  cors_enabled: true
+  cors_origins: ['*']
+  rate_limit_enabled: false
+
+# Logging Configuration
+logging:
+  level: INFO
+  log_queries: true
+  log_performance: true
+  log_file: logs/tenderintel.log
+
+# Analytics Configuration
+analytics:
+  enable_currency_normalization: true
+  default_currency: INR
+  enable_financial_analysis: true
+  enable_competitive_intelligence: true
+
+# ====================================================================
+# NOTES FOR USERS:
+# ====================================================================
+#
+# 1. DEFAULT SETUP (SQLite - Recommended for most users):
+#    - This configuration works immediately
+#    - No changes needed unless you want to customize
+#    - Supports up to 100K records with excellent performance
+#
+# 2. OPENSEARCH SETUP (Optional - for large-scale deployments):
+#    - Install: pip install tenderintel[opensearch]
+#    - Set search.opensearch.enabled = true
+#    - Configure hosts to point to your OpenSearch cluster
+#    - Restart server
+#
+# 3. ENVIRONMENT VARIABLES (Override any setting):
+#    - TENDERINTEL_SEARCH_ENGINE=opensearch
+#    - TENDERINTEL_SQLITE_PATH=path/to/db.db
+#    - TENDERINTEL_OPENSEARCH_HOST=opensearch.example.com
+#    - TENDERINTEL_OPENSEARCH_PORT=9200
+#    - TENDERINTEL_API_PORT=8000
+#
+# 4. PERFORMANCE TUNING:
+#    - For <10K records: Reduce cache_size_kb to 32000
+#    - For 50K-100K records: Keep defaults
+#    - For >100K records: Consider OpenSearch
+#
+# ====================================================================

@@ -1,0 +1,89 @@
+{
+  "index_patterns": [
+    "tenders*"
+  ],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "analysis": {
+        "analyzer": {
+          "tender_analyzer": {
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "tender_synonyms"
+            ]
+          }
+        },
+        "filter": {
+          "tender_synonyms": {
+            "type": "synonym_graph",
+            "synonyms": [
+              "lan,local area network,layer 2 switch,vlan,ethernet",
+              "api,application programming interface,rest api,api gateway",
+              "iam,identity and access management,user management",
+              "waf,web application firewall,application firewall",
+              "siem,security information event management,security analytics"
+            ]
+          }
+        }
+      },
+      "similarity": {
+        "tender_bm25": {
+          "type": "BM25",
+          "k1": 1.2,
+          "b": 0.2
+        }
+      }
+    },
+    "mappings": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "tender_analyzer",
+          "similarity": "tender_bm25",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "org": {
+          "type": "keyword"
+        },
+        "status": {
+          "type": "keyword"
+        },
+        "aoc_date": {
+          "type": "date"
+        },
+        "tender_id": {
+          "type": "keyword"
+        },
+        "url": {
+          "type": "keyword"
+        },
+        "service_category": {
+          "type": "keyword"
+        },
+        "value_range": {
+          "type": "keyword"
+        },
+        "region": {
+          "type": "keyword"
+        },
+        "department_type": {
+          "type": "keyword"
+        },
+        "complexity": {
+          "type": "keyword"
+        },
+        "keywords": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,392 @@
+<!-- 
+    TenderIntel - Executive Dashboard Content
+    Full dashboard HTML to be injected into #dashboard-content
+    Works with executiveDashboard() Alpine.js component
+-->
+
+<!-- Dashboard Header -->
+<div class="mb-6">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800">Market Overview</h2>
+            <p class="text-gray-600 mt-1">Real-time market intelligence and performance metrics</p>
+        </div>
+        <div class="flex items-center space-x-3 flex-wrap">
+            <!-- Service Category Filter -->
+            <select x-model="selectedServiceFilter" @change="applyServiceFilter()" 
+                    class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <option value="all">All Services</option>
+                <option value="cloud">Cloud Services</option>
+                <option value="software">Software</option>
+                <option value="integration">Integration</option>
+                <option value="database">Database</option>
+                <option value="security">Security</option>
+                <option value="networking">Networking</option>
+                <option value="hardware">Hardware</option>
+            </select>
+            
+            <!-- Time Range Selector -->
+            <select x-model="selectedTimeframe" @change="refreshDashboard()" 
+                    class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <option value="3months">Past 3 Months</option>
+                <option value="6months">Past 6 Months</option>
+                <option value="12months">Past 12 Months</option>
+                <option value="24months">Past 24 Months</option>
+            </select>
+            
+            <!-- Refresh Button -->
+            <button @click="refreshDashboard()" 
+                    :disabled="loading"
+                    class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2">
+                <svg class="w-4 h-4" :class="loading ? 'animate-spin' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                <span>Refresh Data</span>
+            </button>
+            
+            <!-- Export Dashboard -->
+            <button @click="exportDashboardData()" 
+                    class="px-4 py-2 bg-success-600 text-white rounded-lg hover:bg-success-700 transition-colors">
+                Export Dashboard
+            </button>
+        </div>
+    </div>
+    
+    <!-- Last Updated -->
+    <div class="mt-2 flex items-center text-sm text-gray-500">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>Last updated: <span x-text="formatRelativeTime(lastUpdated)"></span></span>
+    </div>
+</div>
+
+<!-- Loading State -->
+<div x-show="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <template x-for="i in 4">
+        <div class="bg-white rounded-lg shadow-md p-6 animate-pulse">
+            <div class="flex items-center justify-between">
+                <div class="flex-1">
+                    <div class="h-4 bg-gray-200 rounded mb-2 w-2/3"></div>
+                    <div class="h-8 bg-gray-200 rounded mb-2 w-full"></div>
+                    <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                </div>
+                <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+            </div>
+        </div>
+    </template>
+</div>
+
+<!-- KPI Cards -->
+<div x-show="!loading" x-transition:enter="animate-slide-up" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    
+    <!-- Total Market Value Card -->
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 border-l-4 border-primary-500 transition-shadow">
+        <div class="flex items-center justify-between">
+            <div class="flex-1">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Market Value</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2" 
+                   x-text="formatCurrency(data.total_market_value_inr || 0)"></p>
+                <div class="flex items-center mt-2">
+                    <template x-if="(data.market_growth_percent || 0) >= 0">
+                        <svg class="w-4 h-4 text-success-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </template>
+                    <template x-if="(data.market_growth_percent || 0) < 0">
+                        <svg class="w-4 h-4 text-danger-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                        </svg>
+                    </template>
+                    <span :class="(data.market_growth_percent || 0) >= 0 ? 'text-success-500' : 'text-danger-500'" 
+                          class="text-sm font-semibold ml-1" 
+                          x-text="((data.market_growth_percent || 0) >= 0 ? '+' : '') + (data.market_growth_percent || 0).toFixed(1) + '%'"></span>
+                    <span class="text-sm text-gray-500 ml-2">vs. Previous Period</span>
+                </div>
+            </div>
+            <div class="bg-primary-50 rounded-full p-3">
+                <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Active Competitors Card -->
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 border-l-4 border-purple-500 transition-shadow">
+        <div class="flex items-center justify-between">
+            <div class="flex-1">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Competitor Count</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2" 
+                   x-text="data.total_firms || 37"></p>
+                <div class="flex items-center mt-2">
+                    <span class="text-sm text-gray-600">across</span>
+                    <span class="text-sm font-semibold text-gray-900 ml-1" 
+                          x-text="data.total_services || 7"></span>
+                    <span class="text-sm text-gray-600 ml-1">service categories</span>
+                </div>
+            </div>
+            <div class="bg-purple-50 rounded-full p-3">
+                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Market Concentration Card -->
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 border-l-4 border-green-500 transition-shadow">
+        <div class="flex items-center justify-between">
+            <div class="flex-1">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Market Concentration (HHI)</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2" 
+                   x-text="((data.market_concentration_hhi || 0.048) * 100).toFixed(2) + '%'"></p>
+                <div class="flex items-center mt-2">
+                    <span class="text-sm font-semibold" 
+                          :class="getMarketStructureColor(data.market_concentration_hhi || 0.048)"
+                          x-text="window.formatters?.marketStructure(data.market_concentration_hhi || 0.048)"></span>
+                </div>
+            </div>
+            <div class="bg-green-50 rounded-full p-3">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Average Deal Size Card -->
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 border-l-4 border-yellow-500 transition-shadow">
+        <div class="flex items-center justify-between">
+            <div class="flex-1">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Average Contract Value</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2" 
+                   x-text="formatCurrency(data.avg_deal_size_inr || 88000000)"></p>
+                <div class="flex items-center mt-2">
+                    <span class="text-sm text-gray-600">Median Value:</span>
+                    <span class="text-sm font-semibold text-gray-900 ml-1" 
+                          x-text="formatCurrency(data.median_deal_size_inr || 75000000)"></span>
+                </div>
+            </div>
+            <div class="bg-yellow-50 rounded-full p-3">
+                <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    
+    <!-- Market Trends Chart -->
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-800">Market Value Trends</h3>
+            <div class="flex items-center space-x-2">
+                <button @click="trendsChartType = 'line'; renderTrendsChart()" 
+                        :class="trendsChartType === 'line' ? 'bg-primary-100 text-primary-700' : 'text-gray-500'"
+                        class="p-2 rounded hover:bg-gray-100 transition-colors text-xs">
+                    Line
+                </button>
+                <button @click="trendsChartType = 'bar'; renderTrendsChart()" 
+                        :class="trendsChartType === 'bar' ? 'bg-primary-100 text-primary-700' : 'text-gray-500'"
+                        class="p-2 rounded hover:bg-gray-100 transition-colors text-xs">
+                    Bar
+                </button>
+            </div>
+        </div>
+        <canvas id="trendsChart" class="w-full" style="max-height: 350px;"></canvas>
+    </div>
+    
+    <!-- Service Distribution Chart -->
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-800">Service Category Breakdown</h3>
+            <div class="flex items-center space-x-2">
+                <button @click="distributionChartType = 'doughnut'; renderDistributionChart()" 
+                        :class="distributionChartType === 'doughnut' ? 'bg-primary-100 text-primary-700' : 'text-gray-500'"
+                        class="p-2 rounded hover:bg-gray-100 transition-colors text-xs">
+                    Donut
+                </button>
+                <button @click="distributionChartType = 'bar'; renderDistributionChart()" 
+                        :class="distributionChartType === 'bar' ? 'bg-primary-100 text-primary-700' : 'text-gray-500'"
+                        class="p-2 rounded hover:bg-gray-100 transition-colors text-xs">
+                    Bar
+                </button>
+            </div>
+        </div>
+        <canvas id="serviceDistributionChart" class="w-full" style="max-height: 350px;"></canvas>
+        
+        <!-- Service Details Table -->
+        <div class="mt-4">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-3 py-2 text-left font-medium text-gray-700">Service Category</th>
+                            <th class="px-3 py-2 text-right font-medium text-gray-700">Contract Count</th>
+                            <th class="px-3 py-2 text-right font-medium text-gray-700">Total Value</th>
+                            <th class="px-3 py-2 text-right font-medium text-gray-700">Market Share</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="(service, index) in (data.service_breakdown || []).slice(0, 6)" :key="index">
+                            <tr class="border-b hover:bg-gray-50 transition-colors">
+                                <td class="px-3 py-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-3 h-3 rounded-full" 
+                                             :style="`background-color: ${window.colorUtils?.getServiceCategoryColor(service.name)}`"></div>
+                                        <span class="font-medium" x-text="window.formatters?.titleCase(service.name || 'Unknown')"></span>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-2 text-right" x-text="window.formatters?.number(service.tender_count || 0)"></td>
+                                <td class="px-3 py-2 text-right" x-text="formatCurrency(service.total_value || 0)"></td>
+                                <td class="px-3 py-2 text-right">
+                                    <span class="font-semibold" x-text="window.formatters?.percent(service.market_share_percent || 0, 1)"></span>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Strategic Insights Panel -->
+<div x-show="!loading" x-transition:enter="animate-slide-up" class="bg-gradient-to-r from-primary-50 to-purple-50 rounded-lg shadow-md p-6 mb-6">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold text-gray-800 flex items-center">
+            <svg class="w-5 h-5 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Market Insights
+        </h3>
+        <button @click="refreshInsights()" 
+                class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+            Update Insights
+        </button>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <template x-for="(insight, index) in (data.strategic_insights || defaultInsights)" :key="index">
+            <div class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                 @click="showInsightDetails(insight)">
+                <div class="flex items-start">
+                    <div :class="`w-3 h-3 rounded-full mt-1.5 mr-3 flex-shrink-0 ${
+                        insight.type === 'opportunity' ? 'bg-green-500' :
+                        insight.type === 'threat' ? 'bg-red-500' :
+                        insight.type === 'trend' ? 'bg-blue-500' :
+                        'bg-gray-400'
+                    }`"></div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-gray-800 leading-tight" x-text="insight.title"></p>
+                        <p class="text-xs text-gray-600 mt-1 leading-relaxed" x-text="insight.description"></p>
+                        <div class="flex items-center mt-2">
+                            <span :class="`text-xs px-2 py-1 rounded-full ${
+                                insight.impact === 'high' ? 'bg-red-100 text-red-700' :
+                                insight.impact === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-blue-100 text-blue-700'
+                            }`" x-text="window.formatters?.titleCase(insight.impact || 'low') + ' Impact'"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
+
+<!-- Recent Activity & Top Performers Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    
+    <!-- Recent Activity Feed -->
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-800">Activity Feed</h3>
+            <button @click="navigateTo('search')" 
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                View All Activity →
+            </button>
+        </div>
+        
+        <div class="space-y-4 max-h-80 overflow-y-auto">
+            <template x-for="(activity, index) in (data.recent_activities || defaultActivities).slice(0, 8)" :key="index">
+                <div class="flex items-start space-x-3 pb-3 border-b last:border-b-0 last:pb-0">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900" x-text="activity.title || activity.action"></p>
+                        <p class="text-xs text-gray-600 mt-1" x-text="window.formatters?.truncate(activity.description || activity.details || '', 60)"></p>
+                        <div class="flex items-center justify-between mt-2">
+                            <p class="text-xs text-gray-400" x-text="formatRelativeTime(activity.timestamp)"></p>
+                            <template x-if="activity.value">
+                                <span class="text-xs font-semibold text-primary-600" 
+                                      x-text="formatCurrency(activity.value)"></span>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+    
+    <!-- Top Performers Table -->
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg p-6 transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-800">Leading Firms</h3>
+            <div class="flex items-center space-x-2">
+                <select x-model="performersMetric" @change="updateTopPerformers()" 
+                        class="text-xs border rounded px-2 py-1">
+                    <option value="total_value">Total Value</option>
+                    <option value="contract_count">Contract Count</option>
+                    <option value="market_share">Market Share</option>
+                    <option value="growth_rate">Growth Rate</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Top Performers List -->
+        <div class="space-y-3">
+            <template x-for="(performer, index) in (data.top_performers || []).slice(0, 10)" :key="index">
+                <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                     @click="showFirmDetails(performer.firm_name)">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary-400 to-purple-500 flex items-center justify-center">
+                                <span class="text-white text-sm font-bold" x-text="(index + 1)"></span>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900" x-text="performer.firm_name || performer.organization"></p>
+                            <p class="text-xs text-gray-500" x-text="performer.primary_service || 'Multiple Services'"></p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-gray-900" 
+                           x-text="formatMetric(performer[performersMetric])"></p>
+                        <template x-if="performer.trend">
+                            <p class="text-xs" 
+                               :class="performer.trend > 0 ? 'text-success-500' : 'text-danger-500'"
+                               x-text="(performer.trend > 0 ? '+' : '') + performer.trend.toFixed(1) + '%'"></p>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- View All Button -->
+            <div class="pt-3 border-t">
+                <button @click="navigateTo('intelligence')" 
+                        class="w-full py-2 text-sm text-primary-600 hover:text-primary-700 font-medium">
+                    View Detailed Analysis →
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

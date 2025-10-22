@@ -1,0 +1,1243 @@
+<!-- TenderIntel Advanced Search Interface Template -->
+<div id="search-page" x-data="advancedSearch()" x-init="init()" class="max-w-7xl mx-auto">
+    
+    <!-- ==================== PAGE HEADER ==================== -->
+    <div class="mb-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">Advanced Search</h2>
+                <p class="text-gray-600 mt-1">Search with intelligent keyword expansion and comprehensive filtering</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <!-- Enhanced Demo Menu (NEW) -->
+                <div class="relative" x-data="{showDemoMenu: false}">
+                    <button @click="showDemoMenu = !showDemoMenu" 
+                            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm flex items-center space-x-2">
+                        <span>🎬 Demo & Tour</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    
+                    <!-- Demo Dropdown Menu -->
+                    <div x-show="showDemoMenu" 
+                         @click.away="showDemoMenu = false"
+                         x-transition
+                         class="absolute top-full mt-2 right-0 w-72 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 overflow-y-auto">
+                        
+                        <!-- Guided Tours Section -->
+                        <div class="p-3 border-b border-gray-100">
+                            <div class="text-xs font-semibold text-gray-500 mb-2">GUIDED TOURS</div>
+                            <button @click="startGuidedTour('comprehensive'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-50 text-sm mb-1">
+                                <span class="font-medium">▶️ Comprehensive Tour</span>
+                                <span class="text-xs text-gray-500 block">7 steps • All features</span>
+                            </button>
+                            <button @click="startGuidedTour('quickStart'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 text-sm">
+                                <span class="font-medium">⚡ Quick Start</span>
+                                <span class="text-xs text-gray-500 block">3 steps • Core features</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Interactive Scenarios Section -->
+                        <div class="p-3">
+                            <div class="text-xs font-semibold text-gray-500 mb-2">INTERACTIVE SCENARIOS</div>
+                            
+                            <!-- Networking -->
+                            <button @click="runInteractiveScenario('demo_networking_lan'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm">
+                                <span>🌐 Networking: LAN</span>
+                            </button>
+                            <button @click="runInteractiveScenario('demo_networking_vpn'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm">
+                                <span>🌐 Networking: VPN</span>
+                            </button>
+                            
+                            <!-- Cloud -->
+                            <button @click="runInteractiveScenario('demo_cloud_api'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm">
+                                <span>☁️ Cloud: API</span>
+                            </button>
+                            <button @click="runInteractiveScenario('demo_cloud_aws'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm">
+                                <span>☁️ Cloud: AWS (NEW)</span>
+                            </button>
+                            
+                            <!-- Security -->
+                            <button @click="runInteractiveScenario('demo_security_iam'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm">
+                                <span>🔐 Security: IAM</span>
+                            </button>
+                            <button @click="runInteractiveScenario('demo_security_waf'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 text-sm">
+                                <span>🔐 Security: WAF</span>
+                            </button>
+                            
+                            <!-- Government (NEW) -->
+                            <button @click="runInteractiveScenario('demo_gov_rfp'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-50 text-sm">
+                                <span>🏛️ Gov: RFP (NEW)</span>
+                            </button>
+                            <button @click="runInteractiveScenario('demo_gov_gem'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-50 text-sm">
+                                <span>🏛️ Gov: GeM (NEW)</span>
+                            </button>
+                            
+                            <!-- Emerging Tech (NEW) -->
+                            <button @click="runInteractiveScenario('demo_ai_genai'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 text-sm">
+                                <span>🤖 AI: GenAI (NEW)</span>
+                            </button>
+                            <button @click="runInteractiveScenario('demo_emerging_blockchain'); showDemoMenu = false" 
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 text-sm">
+                                <span>🚀 Blockchain (NEW)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search History Toggle -->
+                <button @click="showSavedSearches = !showSavedSearches"
+                        :class="showSavedSearches ? 'bg-gray-100 border-gray-400' : 'border-gray-300'"
+                        class="px-4 py-2 border-2 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                    History & Saved
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ==================== SEARCH BAR SECTION ==================== -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex items-center space-x-4">
+            <div class="flex-1 relative">
+                <input type="text" 
+                       x-model="query"
+                       @keyup.enter="performSearch()"
+                       @input="showExpansions = query.length >= 3"
+                       placeholder="Enter keyword (e.g., cloud, API, lan, security, database)..."
+                       class="w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-lg 
+                              focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                       :class="error ? 'border-red-300' : ''">
+                
+                <!-- Clear Query Button -->
+                <button x-show="query.length > 0" 
+                        @click="query = ''; results = []; error = null; expansionPhrases = []"
+                        class="absolute right-3 top-3 text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Search Button -->
+            <button @click="performSearch()" 
+                    :disabled="loading || !query"
+                    class="px-8 py-3 bg-primary-600 text-white rounded-lg font-semibold
+                           hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed 
+                           transition-colors flex items-center space-x-2">
+                <svg x-show="!loading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <svg x-show="loading" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                <span x-text="loading ? 'Searching...' : 'Search'"></span>
+            </button>
+            
+            <!-- Toggle Expansions -->
+            <button @click="showExpansions = !showExpansions" 
+                    :class="showExpansions ? 'bg-blue-100 text-blue-700 border-blue-300' : 'border-gray-300 text-gray-600'"
+                    class="px-4 py-3 border-2 rounded-lg hover:bg-gray-50 transition-colors"
+                    title="Show/hide keyword expansion phrases">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Error Display -->
+        <div x-show="error" x-transition:enter="transition ease-out duration-200" class="mt-4">
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p class="text-sm text-red-700" x-text="error"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Keyword Expansion Phrases -->
+        <div x-show="showExpansions && expansionPhrases.length > 0" 
+             x-transition:enter="transition ease-out duration-200" class="mt-4">
+            <div class="flex items-center flex-wrap gap-2">
+                <span class="text-sm font-medium text-gray-600">Also searching for:</span>
+                <template x-for="phrase in expansionPhrases" :key="phrase.phrase || phrase">
+                    <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm border border-blue-200 
+                                 hover:bg-blue-100 transition-colors">
+                        <span x-text="phrase.phrase || phrase"></span>
+                    </span>
+                </template>
+            </div>
+        </div>
+        
+        <!-- Search Summary -->
+        <div x-show="lastSearchTime && !loading" class="mt-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4 text-sm text-gray-600">
+                <span x-text="getResultCountText()"></span>
+                <span x-show="lastSearchTime">• Search took <span x-text="lastSearchTime"></span>ms</span>
+                <span x-show="expansionPhrases.length > 0">• <span x-text="expansionPhrases.length"></span> expansion phrases</span>
+            </div>
+            <button @click="saveCurrentSearch()" 
+                    x-show="query && results.length > 0"
+                    class="px-3 py-1.5 text-sm text-primary-600 hover:text-primary-700 
+                           hover:bg-primary-50 rounded-lg transition-colors">
+                Save Search
+            </button>
+        </div>
+    </div>
+    
+    <!-- ==================== MAIN CONTENT GRID ==================== -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- ==================== SAVED SEARCHES SIDEBAR ==================== -->
+        <div x-show="showSavedSearches" 
+             x-transition:enter="transition ease-out duration-300"
+             class="lg:col-span-1 space-y-6">
+            
+            <!-- Search History -->
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center justify-between">
+                    <span>Recent Searches</span>
+                    <span x-text="searchHistory.length" class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs"></span>
+                </h4>
+                
+                <div class="space-y-2 max-h-48 overflow-y-auto">
+                    <template x-for="history in searchHistory" :key="history.id">
+                        <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg cursor-pointer"
+                             @click="query = history.query; performSearch()">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-800 truncate" x-text="history.query"></p>
+                                <p class="text-xs text-gray-500" x-text="`${history.resultCount} results • ${formatters.relativeTime(history.timestamp)}`"></p>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <div x-show="searchHistory.length === 0" class="text-center py-4 text-xs text-gray-500">
+                        No recent searches
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Saved Searches -->
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center justify-between">
+                    <span>Saved Searches</span>
+                    <span x-text="savedSearches.length" class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs"></span>
+                </h4>
+                
+                <div class="space-y-2 max-h-56 overflow-y-auto">
+                    <template x-for="saved in savedSearches" :key="saved.id">
+                        <div class="p-2 hover:bg-gray-50 rounded-lg">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-800 truncate" x-text="saved.name"></p>
+                                    <p class="text-xs text-gray-500" x-text="`${saved.resultCount} results • ${formatters.relativeTime(saved.timestamp)}`"></p>
+                                </div>
+                                <div class="flex items-center space-x-1 ml-2">
+                                    <button @click="loadSavedSearch(saved.id)" 
+                                            class="p-1 text-primary-600 hover:text-primary-700"
+                                            title="Load search">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+                                        </svg>
+                                    </button>
+                                    <button @click="deleteSavedSearch(saved.id)" 
+                                            class="p-1 text-red-600 hover:text-red-700"
+                                            title="Delete search">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <div x-show="savedSearches.length === 0" class="text-center py-4 text-xs text-gray-500">
+                        No saved searches yet
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== MAIN SEARCH AREA ==================== -->
+        <div :class="showSavedSearches ? 'lg:col-span-3' : 'lg:col-span-4'" class="space-y-6">
+            
+            <!-- ==================== ADVANCED FILTERS PANEL ==================== -->
+            <div class="bg-white rounded-lg shadow-md">
+                <!-- Filter Panel Header -->
+                <div class="p-4 border-b flex items-center justify-between cursor-pointer"
+                     @click="showFilters = !showFilters">
+                    <div class="flex items-center space-x-3">
+                        <h3 class="text-lg font-bold text-gray-800">Advanced Filters</h3>
+                        <span x-show="activeFilterCount > 0" 
+                              class="px-2.5 py-0.5 bg-primary-100 text-primary-700 rounded-full text-sm font-semibold"
+                              x-text="activeFilterCount + ' filters active'"></span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button @click.stop="clearFilters()" 
+                                x-show="activeFilterCount > 0"
+                                class="px-3 py-1.5 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors">
+                            Clear All Filters
+                        </button>
+                        <svg class="w-5 h-5 text-gray-500 transition-transform" 
+                             :class="showFilters ? 'rotate-180' : ''"
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- ALL 8 FILTER CATEGORIES GRID -->
+                <div x-show="showFilters" x-transition:enter="transition ease-out duration-300" class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <!-- 1. SERVICE CATEGORIES (Multi-Select Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>Service Categories</span>
+                                <button x-show="filters.serviceCategories.length > 0"
+                                        @click="clearFilterCategory('serviceCategories')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 max-h-56 overflow-y-auto border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.serviceCategories" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('serviceCategories', option.value)"
+                                               :checked="filters.serviceCategories.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 2. ORGANIZATIONS (Multi-Select with Search) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>🏢 Organizations</span>
+                                <button x-show="filters.organizations.length > 0"
+                                        @click="clearFilterCategory('organizations')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            
+                            <!-- Organization Search -->
+                            <input type="text" 
+                                   x-model="orgSearchQuery"
+                                   placeholder="Search organizations..."
+                                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                            
+                            <div class="space-y-2 max-h-56 overflow-y-auto border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filteredOrganizations" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('organizations', option.value)"
+                                               :checked="filters.organizations.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" 
+                                              x-text="formatters.truncate(option.label, 28)"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                                
+                                <div x-show="filteredOrganizations.length === 0" 
+                                     class="text-center py-4 text-sm text-gray-500">
+                                    No organizations match your search
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 3. VALUE RANGES (Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>💰 Deal Value Ranges</span>
+                                <button x-show="filters.valueRanges.length > 0"
+                                        @click="clearFilterCategory('valueRanges')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.valueRanges" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('valueRanges', option.value)"
+                                               :checked="filters.valueRanges.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. REGIONS (Multi-Select Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>🌏 Geographic Regions</span>
+                                <button x-show="filters.regions.length > 0"
+                                        @click="clearFilterCategory('regions')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.regions" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('regions', option.value)"
+                                               :checked="filters.regions.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 5. STATUS TYPES (Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>📋 Tender Status</span>
+                                <button x-show="filters.statusTypes.length > 0"
+                                        @click="clearFilterCategory('statusTypes')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.statusTypes" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('statusTypes', option.value)"
+                                               :checked="filters.statusTypes.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 6. DEPARTMENT TYPES (Radio Buttons) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>🏛️ Department Type</span>
+                                <button x-show="filters.departmentTypes.length > 0"
+                                        @click="clearFilterCategory('departmentTypes')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.departmentTypes" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="radio" 
+                                               name="departmentType"
+                                               :value="option.value"
+                                               @change="toggleFilter('departmentTypes', option.value)"
+                                               :checked="filters.departmentTypes.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 7. COMPLEXITY LEVELS (Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>⚙️ Complexity Level</span>
+                                <button x-show="filters.complexityLevels.length > 0"
+                                        @click="clearFilterCategory('complexityLevels')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.complexityLevels" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('complexityLevels', option.value)"
+                                               :checked="filters.complexityLevels.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 2. ORGANIZATIONS (Multi-Select with Search) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>🏢 Organizations</span>
+                                <button x-show="filters.organizations.length > 0"
+                                        @click="clearFilterCategory('organizations')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            
+                            <!-- Organization Search -->
+                            <input type="text" 
+                                   x-model="orgSearchQuery"
+                                   placeholder="Search organizations..."
+                                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                            
+                            <div class="space-y-2 max-h-56 overflow-y-auto border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filteredOrganizations" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('organizations', option.value)"
+                                               :checked="filters.organizations.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" 
+                                              x-text="formatters.truncate(option.label, 28)"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                                
+                                <div x-show="filteredOrganizations.length === 0" 
+                                     class="text-center py-4 text-sm text-gray-500">
+                                    No organizations match your search
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 3. VALUE RANGES (Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>💰 Deal Value Ranges</span>
+                                <button x-show="filters.valueRanges.length > 0"
+                                        @click="clearFilterCategory('valueRanges')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.valueRanges" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('valueRanges', option.value)"
+                                               :checked="filters.valueRanges.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. REGIONS (Multi-Select Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>🌏 Geographic Regions</span>
+                                <button x-show="filters.regions.length > 0"
+                                        @click="clearFilterCategory('regions')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.regions" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('regions', option.value)"
+                                               :checked="filters.regions.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 5. STATUS TYPES (Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>📋 Tender Status</span>
+                                <button x-show="filters.statusTypes.length > 0"
+                                        @click="clearFilterCategory('statusTypes')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.statusTypes" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('statusTypes', option.value)"
+                                               :checked="filters.statusTypes.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 6. DEPARTMENT TYPES (Radio Buttons) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>🏛️ Department Type</span>
+                                <button x-show="filters.departmentTypes.length > 0"
+                                        @click="clearFilterCategory('departmentTypes')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.departmentTypes" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="radio" 
+                                               name="departmentType"
+                                               :value="option.value"
+                                               @change="toggleFilter('departmentTypes', option.value)"
+                                               :checked="filters.departmentTypes.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 7. COMPLEXITY LEVELS (Checkboxes) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>⚙️ Complexity Level</span>
+                                <button x-show="filters.complexityLevels.length > 0"
+                                        @click="clearFilterCategory('complexityLevels')"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="space-y-2 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                <template x-for="option in filterOptions.complexityLevels" :key="option.value">
+                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded transition-colors">
+                                        <input type="checkbox" 
+                                               :value="option.value"
+                                               @change="toggleFilter('complexityLevels', option.value)"
+                                               :checked="filters.complexityLevels.includes(option.value)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                        <span class="flex-1 text-sm text-gray-700" x-text="option.label"></span>
+                                        <span x-show="option.count > 0" 
+                                              class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full" 
+                                              x-text="option.count"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- 8. DATE RANGE FILTERS (Date Pickers) -->
+                        <div class="md:col-span-2 lg:col-span-3">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>📅 Date Range</span>
+                                <button x-show="filters.dateFrom || filters.dateTo"
+                                        @click="filters.dateFrom = null; filters.dateTo = null"
+                                        class="text-xs text-red-600 hover:text-red-700">
+                                    Clear
+                                </button>
+                            </label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">From Date (AOC Date)</label>
+                                    <input type="date" 
+                                           x-model="filters.dateFrom"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">To Date (AOC Date)</label>
+                                    <input type="date" 
+                                           x-model="filters.dateTo"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- SIMILARITY THRESHOLD SLIDER -->
+                        <div class="md:col-span-2 lg:col-span-3">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <span>🎯 Minimum Similarity Threshold</span>
+                                <span class="text-sm text-primary-600 font-semibold" x-text="filters.minSimilarity + '%'"></span>
+                            </label>
+                            <div class="px-3">
+                                <input type="range" 
+                                       x-model="filters.minSimilarity"
+                                       min="0" max="100" step="5"
+                                       class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>0% (Show All)</span>
+                                    <span>50% (Moderate)</span>
+                                    <span>100% (Exact Match)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply Filters Actions -->
+                    <div class="mt-6 flex items-center justify-between pt-4 border-t border-gray-200">
+                        <div class="text-sm text-gray-600">
+                            <span x-text="activeFilterCount"></span> filter<span x-show="activeFilterCount !== 1">s</span> active
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button @click="clearFilters()" 
+                                    x-show="activeFilterCount > 0"
+                                    class="px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
+                                Clear All
+                            </button>
+                            <button @click="performSearch()" 
+                                    :disabled="!query"
+                                    class="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                Apply Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ==================== RESULTS SECTION ==================== -->
+            <div class="bg-white rounded-lg shadow-md">
+                
+                <!-- Results Header -->
+                <div class="p-4 border-b">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <h3 class="text-lg font-bold text-gray-800">Search Results</h3>
+                            <span x-show="totalResults > 0" class="text-gray-600 font-normal text-sm">
+                                (<span x-text="formatters.number(totalResults)"></span> found)
+                            </span>
+                            <span x-show="selectedResults.size > 0" class="text-primary-600 font-medium text-sm">
+                                <span x-text="selectedResults.size"></span> selected
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <!-- Page Size Selector -->
+                            <div class="flex items-center space-x-2">
+                                <label class="text-sm text-gray-600">Show:</label>
+                                <select x-model="pageSize" 
+                                        @change="changePageSize(pageSize)"
+                                        class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Export Buttons -->
+                            <button @click="exportResults('csv')" 
+                                    :disabled="results.length === 0"
+                                    class="px-4 py-2 bg-success-600 text-white rounded-lg hover:bg-success-700 
+                                           disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm">
+                                📊 Export CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loading State -->
+                <div x-show="loading" class="p-8">
+                    <div class="flex flex-col items-center justify-center space-y-4">
+                        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600"></div>
+                        <p class="text-sm text-gray-600">Searching tenders with intelligent expansion...</p>
+                        <div class="text-xs text-gray-500">
+                            Using keyword expansion and BM25 ranking for precise results
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Table -->
+                <div x-show="!loading && results.length > 0" class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 border-b-2 border-gray-200">
+                            <tr>
+                                <!-- Bulk Select Checkbox -->
+                                <th class="px-4 py-3 text-left w-12">
+                                    <input type="checkbox" 
+                                           @change="toggleSelectAll()"
+                                           :checked="selectedResults.size > 0 && paginatedResults.every(r => selectedResults.has(r.tender_id || r.id))"
+                                           class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                </th>
+                                
+                                <!-- Sortable Columns -->
+                                <th @click="sortBy('title')" 
+                                    class="px-4 py-3 text-left font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 transition-colors">
+                                    <div class="flex items-center space-x-1">
+                                        <span>Title</span>
+                                        <svg x-show="sortColumn === 'title'" 
+                                             class="w-4 h-4" 
+                                             :class="sortDirection === 'asc' ? 'rotate-180' : ''"
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                
+                                <th @click="sortBy('organization')" 
+                                    class="px-4 py-3 text-left font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 transition-colors">
+                                    <div class="flex items-center space-x-1">
+                                        <span>Organization</span>
+                                        <svg x-show="sortColumn === 'organization'" 
+                                             class="w-4 h-4" 
+                                             :class="sortDirection === 'asc' ? 'rotate-180' : ''"
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                
+                                <th @click="sortBy('status')" 
+                                    class="px-4 py-3 text-left font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 transition-colors">
+                                    <div class="flex items-center space-x-1">
+                                        <span>Status</span>
+                                        <svg x-show="sortColumn === 'status'" 
+                                             class="w-4 h-4" 
+                                             :class="sortDirection === 'asc' ? 'rotate-180' : ''"
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                
+                                <th @click="sortBy('aoc_date')" 
+                                    class="px-4 py-3 text-left font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 transition-colors">
+                                    <div class="flex items-center space-x-1">
+                                        <span>AOC Date</span>
+                                        <svg x-show="sortColumn === 'aoc_date'" 
+                                             class="w-4 h-4" 
+                                             :class="sortDirection === 'asc' ? 'rotate-180' : ''"
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                
+                                <th @click="sortBy('similarity_percent')" 
+                                    class="px-4 py-3 text-center font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 transition-colors">
+                                    <div class="flex items-center justify-center space-x-1">
+                                        <span>Match %</span>
+                                        <svg x-show="sortColumn === 'similarity_percent'" 
+                                             class="w-4 h-4" 
+                                             :class="sortDirection === 'asc' ? 'rotate-180' : ''"
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </th>
+                                
+                                <th class="px-4 py-3 text-center font-semibold text-gray-700">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <template x-for="(result, index) in paginatedResults" :key="index">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <!-- Selection Checkbox -->
+                                    <td class="px-4 py-3">
+                                        <input type="checkbox" 
+                                               @change="toggleSelectResult(result.tender_id || result.id)"
+                                               :checked="selectedResults.has(result.tender_id || result.id)"
+                                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    </td>
+                                    
+                                    <!-- Title Column -->
+                                    <td class="px-4 py-3">
+                                        <div class="max-w-md">
+                                            <p class="font-medium text-gray-900 line-clamp-2" 
+                                               x-text="result.title"
+                                               @click="showResultDetails(result)"
+                                               class="cursor-pointer hover:text-primary-600"></p>
+                                            <p class="text-xs text-gray-500 mt-1" 
+                                               x-text="result.tender_id || result.id"></p>
+                                            <div x-show="result.service_category" class="mt-1">
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700"
+                                                      x-text="result.service_category"></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- Organization Column -->
+                                    <td class="px-4 py-3">
+                                        <p class="text-gray-700 font-medium max-w-xs truncate" 
+                                           x-text="result.organization || result.org"></p>
+                                        <p x-show="result.region" class="text-xs text-gray-500 mt-1" 
+                                           x-text="result.region"></p>
+                                    </td>
+                                    
+                                    <!-- Status Column -->
+                                    <td class="px-4 py-3">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                            <span x-text="result.status"></span>
+                                        </span>
+                                    </td>
+                                    
+                                    <!-- AOC Date Column -->
+                                    <td class="px-4 py-3 text-gray-700">
+                                        <span x-text="result.aoc_date"></span>
+                                    </td>
+                                    
+                                    <!-- Similarity Score Column -->
+                                    <td class="px-4 py-3 text-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                                            <span x-text="(result.similarity_percent || result.score) + '%'"></span>
+                                        </span>
+                                    </td>
+                                    
+                                    <!-- Actions Column -->
+                                    <td class="px-4 py-3 text-center">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <button @click="openTender(result)" 
+                                                    class="text-primary-600 hover:text-primary-700 font-medium text-sm">
+                                                View →
+                                            </button>
+                                            <button @click="showResultDetails(result)" 
+                                                    class="text-gray-500 hover:text-gray-700 text-sm"
+                                                    title="Show details">
+                                                ⓘ
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination Controls -->
+                <div x-show="!loading && results.length > 0" class="p-4 border-t bg-gray-50">
+                    <div class="flex items-center justify-between">
+                        <!-- Pagination Info -->
+                        <div class="text-sm text-gray-600">
+                            <span x-text="getPaginationText()"></span>
+                        </div>
+                        
+                        <!-- Pagination Buttons -->
+                        <div class="flex items-center space-x-2">
+                            <!-- First Page -->
+                            <button @click="goToPage(1)" 
+                                    :disabled="currentPage === 1"
+                                    class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-white 
+                                           disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                ««
+                            </button>
+                            
+                            <!-- Previous Page -->
+                            <button @click="goToPage(currentPage - 1)" 
+                                    :disabled="currentPage === 1"
+                                    class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-white 
+                                           disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                ‹ Prev
+                            </button>
+                            
+                            <!-- Current Page Info -->
+                            <span class="px-4 py-1.5 text-sm font-medium text-gray-700">
+                                Page <span x-text="currentPage"></span> of <span x-text="totalPages"></span>
+                            </span>
+                            
+                            <!-- Next Page -->
+                            <button @click="goToPage(currentPage + 1)" 
+                                    :disabled="currentPage >= totalPages"
+                                    class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-white 
+                                           disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                Next ›
+                            </button>
+                            
+                            <!-- Last Page -->
+                            <button @click="goToPage(totalPages)" 
+                                    :disabled="currentPage >= totalPages"
+                                    class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-white 
+                                           disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                »»
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Empty State: No Query -->
+                <div x-show="!loading && !query" class="p-12 text-center">
+                    <div class="text-6xl mb-4">🔍</div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Start Your Search</h3>
+                    <p class="text-sm text-gray-600 mb-6 max-w-md mx-auto">
+                        Enter a keyword like "cloud", "API", "security" or "lan" to find relevant government tenders with intelligent expansion.
+                    </p>
+                    <div class="flex justify-center space-x-3">
+                        <button @click="query = 'cloud'; performSearch()" 
+                                class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm">
+                            Try: "cloud"
+                        </button>
+                        <button @click="query = 'api'; performSearch()" 
+                                class="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm">
+                            Try: "api"
+                        </button>
+                        <button @click="query = 'security'; performSearch()" 
+                                class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm">
+                            Try: "security"
+                        </button>
+                        <button @click="query = 'lan'; performSearch()" 
+                                class="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-sm">
+                            Try: "lan"
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Empty State: No Results -->
+                <div x-show="!loading && query && results.length === 0" class="p-12 text-center">
+                    <div class="text-6xl mb-4">📄</div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">No Results Found</h3>
+                    <p class="text-sm text-gray-600 mb-6 max-w-md mx-auto">
+                        No tenders found for "<strong x-text="query"></strong>". Try different keywords or adjust your filters.
+                    </p>
+                    <div class="flex justify-center space-x-3">
+                        <button @click="clearFilters(); performSearch()" 
+                                class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm">
+                            🔄 Search Without Filters
+                        </button>
+                        <button @click="showExpansions = true; performSearch()" 
+                                class="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                            ⚡ Try Expansions
+                        </button>
+                        <button @click="clearAllData()" 
+                                class="px-4 py-2 text-gray-600 hover:text-gray-700 text-sm">
+                            Clear Search
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Error State -->
+                <div x-show="!loading && error && query" class="p-8">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                        <div class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-red-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M12 8v4m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <h3 class="text-sm font-semibold text-red-800">Search Error</h3>
+                                <p class="text-sm text-red-700 mt-1" x-text="error"></p>
+                                <div class="mt-4 flex space-x-3">
+                                    <button @click="performSearch()" 
+                                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm">
+                                        Try Again
+                                    </button>
+                                    <button @click="clearAllData()" 
+                                            class="px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors text-sm">
+                                        Clear & Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ==================== BULK ACTIONS BAR ==================== -->
+    <div x-show="selectedResults.size > 0" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:leave="transition ease-in duration-200"
+         class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
+        <div class="bg-white border border-gray-300 rounded-lg shadow-lg px-6 py-4">
+            <div class="flex items-center space-x-4">
+                <span class="text-sm font-medium text-gray-700">
+                    <span x-text="selectedResults.size"></span> tender<span x-show="selectedResults.size !== 1">s</span> selected
+                </span>
+                
+                <div class="flex items-center space-x-2">
+                    <button @click="exportResults('csv')" 
+                            class="px-4 py-2 bg-success-600 text-white rounded-lg hover:bg-success-700 transition-colors text-sm">
+                        📊 Export Selected
+                    </button>
+                    
+                    <button @click="selectedResults.clear()" 
+                            class="px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                        Clear Selection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ==================== DEMO EXPLANATION OVERLAY (NEW) ==================== -->
+    <div x-show="showDemoExplanation" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+         @click="showDemoExplanation = false">
+        <div @click.stop class="bg-white rounded-lg shadow-2xl max-w-2xl w-full mx-4 p-6">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-purple-100 rounded-full p-2">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Demo Explanation</h3>
+                </div>
+                <button @click="showDemoExplanation = false" 
+                        class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="text-gray-700 whitespace-pre-line text-sm leading-relaxed" 
+                 x-text="demoExplanationText"></div>
+            <div class="mt-6 flex justify-end">
+                <button @click="showDemoExplanation = false" 
+                        class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ==================== TOUR CONTROL BAR (NEW) ==================== -->
+    <div x-show="tourInProgress" 
+         x-transition:enter="transition ease-out duration-300"
+         class="fixed top-20 right-6 z-50">
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg shadow-2xl px-6 py-4">
+            <div class="flex items-center space-x-4">
+                <!-- Progress -->
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <span class="font-semibold">
+                        Step <span x-text="currentTourStep"></span>/<span x-text="totalTourSteps"></span>
+                    </span>
+                </div>
+                
+                <!-- Controls -->
+                <div class="flex items-center space-x-2 border-l border-white border-opacity-30 pl-4">
+                    <button @click="toggleTourPause()" 
+                            class="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
+                            title="Pause/Resume">
+                        <svg x-show="!tourPaused" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <svg x-show="tourPaused" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </button>
+                    <button @click="stopTour()" 
+                            class="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
+                            title="Stop Tour">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Status -->
+                <div x-show="tourPaused" class="text-xs bg-white bg-opacity-20 px-2 py-1 rounded">
+                    PAUSED
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mt-3 bg-white bg-opacity-20 rounded-full h-2 overflow-hidden">
+                <div class="bg-white h-full transition-all duration-500" 
+                     :style="`width: ${(currentTourStep / totalTourSteps) * 100}%`"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional CSS for better UX -->
+<style>
+    /* Slider customization */
+    .slider::-webkit-slider-thumb {
+        appearance: none;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #3b82f6;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .slider::-moz-range-thumb {
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #3b82f6;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    /* Line clamp utility */
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    /* Smooth transitions */
+    .transition-colors {
+        transition-property: color, background-color, border-color;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+    }
+</style>

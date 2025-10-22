@@ -1,0 +1,111 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Database
+*.db-shm
+*.db-wal
+data/tenders_backup_*.db
+data/*.db-journal
+
+# Logs
+*.log
+logs/
+/tmp/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*.ipynb
+
+# Environment Variables
+.env.local
+.env.*.local
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# PyCharm
+.idea/
+
+# Scraped Data
+downloads/
+*.pdf
+*.doc
+*.docx
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.cache/
+
+# Temporary Files
+*.tmp
+*.temp
+temp/
+
+# Documentation Build
+docs/_build/
+site/
+
+# AWS Credentials (never commit)
+*.pem
+credentials
+.aws/
+
+# Sensitive Configuration
+config/prod/*.secret
+config/*.secret
+secrets/

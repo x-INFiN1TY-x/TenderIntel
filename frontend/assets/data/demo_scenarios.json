@@ -1,0 +1,409 @@
+{
+  "version": "2.0",
+  "last_updated": "2025-10-22",
+  "total_scenarios": 18,
+  
+  "guidedTours": {
+    "comprehensive": [
+      {
+        "stepNumber": 1,
+        "title": "Zero False Positives",
+        "keyword": "lan",
+        "filters": {},
+        "explanation": "Watch how 'lan' finds ONLY networking tenders (VLAN, Ethernet, Layer 2 switches) and NOT irrelevant 'land development' or 'landscape' projects. Anti-pattern protection ensures precision.",
+        "highlightElement": "#expansion-chips",
+        "duration": 4000,
+        "pauseAfter": false,
+        "expectedExpansions": ["local area network", "layer 2 switch", "vlan", "ethernet"],
+        "expectedDomain": "networking"
+      },
+      {
+        "stepNumber": 2,
+        "title": "Keyword Expansion Power",
+        "keyword": "api",
+        "filters": {},
+        "explanation": "A simple 3-letter search 'api' automatically expands into 4 professional phrases: 'application programming interface', 'rest api', 'api gateway', 'openapi'. This finds 10x more relevant tenders than portal searches.",
+        "highlightElement": "#expansion-chips",
+        "duration": 4000,
+        "pauseAfter": false,
+        "expectedExpansions": ["application programming interface", "rest api", "api gateway", "openapi"],
+        "expectedDomain": "cloud"
+      },
+      {
+        "stepNumber": 3,
+        "title": "Domain Classification",
+        "keyword": "waf",
+        "filters": {},
+        "explanation": "TenderIntel automatically classifies 'waf' (Web Application Firewall) as SECURITY domain with 95% confidence. Domain-aware search improves result relevance and enables industry-specific filtering.",
+        "highlightElement": "#search-results",
+        "duration": 4000,
+        "pauseAfter": false,
+        "expectedExpansions": ["web application firewall", "application layer firewall", "web protection"],
+        "expectedDomain": "security"
+      },
+      {
+        "stepNumber": 4,
+        "title": "Government Procurement Terms (NEW)",
+        "keyword": "rfp",
+        "filters": {},
+        "explanation": "NEW in v2.0: Government-specific terms like 'rfp' (Request for Proposal), 'gem' (Government e-Marketplace), 'aoc' (Award of Contract), 'cppp' now supported. Critical for procurement professionals.",
+        "highlightElement": "#expansion-chips",
+        "duration": 4000,
+        "pauseAfter": false,
+        "expectedExpansions": ["request for proposal", "tender document", "procurement notice", "bid invitation"],
+        "expectedDomain": "government_procurement"
+      },
+      {
+        "stepNumber": 5,
+        "title": "Emerging Technologies (NEW)",
+        "keyword": "genai",
+        "filters": {},
+        "explanation": "NEW: Cutting-edge tech keywords like 'genai' (Generative AI), 'llm' (Large Language Models), 'quantum', 'blockchain' now supported. Stay ahead of technology trends in government procurement.",
+        "highlightElement": "#expansion-chips",
+        "duration": 4000,
+        "pauseAfter": false,
+        "expectedExpansions": ["generative artificial intelligence", "large language model", "llm hosting", "ai model hosting"],
+        "expectedDomain": "ai_ml"
+      },
+      {
+        "stepNumber": 6,
+        "title": "Advanced Filtering Precision",
+        "keyword": "cloud",
+        "filters": {
+          "serviceCategories": ["cloud"],
+          "regions": ["north"],
+          "valueRanges": ["10000000-50000000"]
+        },
+        "explanation": "Combine keyword search with filters for laser-focused results: 'cloud' tenders in Northern India worth ₹1-5 Crore. From 18 results to 3 highly relevant opportunities.",
+        "highlightElement": "#filter-panel",
+        "duration": 5000,
+        "pauseAfter": true,
+        "expectedResults": 3
+      },
+      {
+        "stepNumber": 7,
+        "title": "Similarity Threshold Control",
+        "keyword": "security",
+        "filters": {
+          "minSimilarity": 70
+        },
+        "explanation": "Control precision with similarity threshold: 70% = high-quality matches only. BM25 ranking ensures most relevant results appear first. Adjust threshold based on your needs.",
+        "highlightElement": "#similarity-slider",
+        "duration": 4000,
+        "pauseAfter": false,
+        "expectedResults": 8
+      }
+    ],
+    
+    "quickStart": [
+      {
+        "stepNumber": 1,
+        "title": "Quick Demo: Networking",
+        "keyword": "lan",
+        "filters": {},
+        "explanation": "Find networking equipment tenders with intelligent expansion",
+        "duration": 3000,
+        "pauseAfter": false
+      },
+      {
+        "stepNumber": 2,
+        "title": "Quick Demo: Cloud Services",
+        "keyword": "api",
+        "filters": {},
+        "explanation": "Discover API and integration opportunities",
+        "duration": 3000,
+        "pauseAfter": false
+      },
+      {
+        "stepNumber": 3,
+        "title": "Quick Demo: Security",
+        "keyword": "firewall",
+        "filters": {},
+        "explanation": "Explore cybersecurity procurement",
+        "duration": 3000,
+        "pauseAfter": false
+      }
+    ]
+  },
+  
+  "interactiveScenarios": [
+    {
+      "id": "demo_networking_lan",
+      "name": "Networking: Local Area Network",
+      "category": "networking",
+      "keyword": "lan",
+      "filters": {},
+      "expectedResults": 4,
+      "highlightFeatures": ["keyword_expansion", "zero_false_positives", "domain_classification"],
+      "explanation": "Demonstrates intelligent expansion of 'lan' into 5 networking phrases while avoiding false positives like 'land development'. Perfect example of anti-pattern protection.",
+      "educationalValue": "Shows how 3-letter acronyms transform into precise multi-word searches"
+    },
+    {
+      "id": "demo_networking_vpn",
+      "name": "Networking: VPN Solutions",
+      "category": "networking",
+      "keyword": "vpn",
+      "filters": {},
+      "expectedResults": 3,
+      "highlightFeatures": ["keyword_expansion", "domain_classification"],
+      "explanation": "Expands 'vpn' to 'virtual private network', 'site to site vpn', 'vpn gateway', 'ipsec'. Finds secure connectivity tenders.",
+      "educationalValue": "Demonstrates networking domain expertise"
+    },
+    {
+      "id": "demo_cloud_api",
+      "name": "Cloud: API Services",
+      "category": "cloud",
+      "keyword": "api",
+      "filters": {},
+      "expectedResults": 2,
+      "highlightFeatures": ["keyword_expansion", "anti_patterns", "domain_classification"],
+      "explanation": "Expands 'api' to professional terms while avoiding 'application form' false positives. Cloud domain with 95% confidence.",
+      "educationalValue": "Shows cloud/integration domain classification"
+    },
+    {
+      "id": "demo_cloud_aws",
+      "name": "Cloud: AWS Services (NEW)",
+      "category": "cloud",
+      "keyword": "aws",
+      "filters": {},
+      "expectedResults": 2,
+      "highlightFeatures": ["vendor_specific", "cloud_provider"],
+      "explanation": "NEW in v2.0: Cloud provider keywords like 'aws', 'azure', 'gcp' now supported for vendor-specific searches.",
+      "educationalValue": "Demonstrates new cloud provider support"
+    },
+    {
+      "id": "demo_security_iam",
+      "name": "Security: Identity & Access Management",
+      "category": "security",
+      "keyword": "iam",
+      "filters": {},
+      "expectedResults": 3,
+      "highlightFeatures": ["keyword_expansion", "security_domain"],
+      "explanation": "Expands 'iam' to 'identity and access management', 'user management', 'access control'. Security domain classification.",
+      "educationalValue": "Shows IAM/authentication tender discovery"
+    },
+    {
+      "id": "demo_security_firewall",
+      "name": "Security: Firewall Solutions",
+      "category": "security",
+      "keyword": "firewall",
+      "filters": {},
+      "expectedResults": 4,
+      "highlightFeatures": ["keyword_expansion", "security_domain"],
+      "explanation": "Finds network firewall, NGFW, WAF tenders. Comprehensive security solution discovery.",
+      "educationalValue": "Demonstrates security infrastructure search"
+    },
+    {
+      "id": "demo_security_waf",
+      "name": "Security: Web Application Firewall",
+      "category": "security",
+      "keyword": "waf",
+      "filters": {},
+      "expectedResults": 2,
+      "highlightFeatures": ["acronym_expansion", "security_domain"],
+      "explanation": "Specialized security term: 'waf' → 'web application firewall', 'application layer firewall', 'web protection'.",
+      "educationalValue": "Shows specialized security acronym handling"
+    },
+    {
+      "id": "demo_database_sql",
+      "name": "Database: SQL Systems",
+      "category": "database",
+      "keyword": "sql",
+      "filters": {},
+      "expectedResults": 5,
+      "highlightFeatures": ["keyword_expansion", "database_domain"],
+      "explanation": "Expands 'sql' to relational database solutions. Finds MySQL, PostgreSQL, Oracle opportunities.",
+      "educationalValue": "Database domain classification"
+    },
+    {
+      "id": "demo_database_mongodb",
+      "name": "Database: MongoDB NoSQL",
+      "category": "database",
+      "keyword": "mongodb",
+      "filters": {},
+      "expectedResults": 2,
+      "highlightFeatures": ["vendor_specific", "nosql"],
+      "explanation": "Vendor-specific database search: 'mongodb' → document database, JSON database.",
+      "educationalValue": "Shows NoSQL database discovery"
+    },
+    {
+      "id": "demo_ai_ml",
+      "name": "AI/ML: Machine Learning Platform",
+      "category": "ai_ml",
+      "keyword": "ml",
+      "filters": {},
+      "expectedResults": 3,
+      "highlightFeatures": ["keyword_expansion", "ai_ml_domain"],
+      "explanation": "AI/ML term: 'ml' → 'machine learning', 'model training platform', 'mlops platform'.",
+      "educationalValue": "Demonstrates AI/ML opportunity discovery"
+    },
+    {
+      "id": "demo_ai_genai",
+      "name": "AI: Generative AI (NEW)",
+      "category": "ai_ml",
+      "keyword": "genai",
+      "filters": {},
+      "expectedResults": 2,
+      "highlightFeatures": ["emerging_tech", "new_keyword"],
+      "explanation": "NEW: Generative AI support - 'genai' → 'generative artificial intelligence', 'large language model', 'llm hosting'.",
+      "educationalValue": "Shows cutting-edge AI procurement tracking"
+    },
+    {
+      "id": "demo_gov_rfp",
+      "name": "Government: Request for Proposal (NEW)",
+      "category": "government",
+      "keyword": "rfp",
+      "filters": {},
+      "expectedResults": 6,
+      "highlightFeatures": ["government_terms", "procurement_specific"],
+      "explanation": "NEW: Government-specific term - 'rfp' → 'request for proposal', 'tender document', 'procurement notice', 'bid invitation'.",
+      "educationalValue": "Demonstrates government procurement terminology"
+    },
+    {
+      "id": "demo_gov_gem",
+      "name": "Government: GeM Portal (NEW)",
+      "category": "government",
+      "keyword": "gem",
+      "filters": {},
+      "expectedResults": 4,
+      "highlightFeatures": ["government_portal", "indian_specific"],
+      "explanation": "NEW: 'gem' → 'government e marketplace', 'gem portal', 'government procurement portal'. India-specific procurement tracking.",
+      "educationalValue": "Shows GeM portal integration capability"
+    },
+    {
+      "id": "demo_gov_aoc",
+      "name": "Government: Award of Contract (NEW)",
+      "category": "government",
+      "keyword": "aoc",
+      "filters": {},
+      "expectedResults": 8,
+      "highlightFeatures": ["government_terms", "contract_awards"],
+      "explanation": "NEW: Track awarded contracts - 'aoc' → 'award of contract', 'contract award', 'tender award'.",
+      "educationalValue": "Demonstrates contract award tracking"
+    },
+    {
+      "id": "demo_emerging_blockchain",
+      "name": "Emerging: Blockchain Technology (NEW)",
+      "category": "emerging",
+      "keyword": "blockchain",
+      "filters": {},
+      "expectedResults": 2,
+      "highlightFeatures": ["emerging_tech", "future_ready"],
+      "explanation": "NEW: Future tech - 'blockchain' → 'distributed ledger', 'blockchain technology', 'decentralized database'.",
+      "educationalValue": "Shows emerging technology tracking"
+    },
+    {
+      "id": "demo_emerging_iot",
+      "name": "Emerging: Internet of Things",
+      "category": "emerging",
+      "keyword": "iot",
+      "filters": {},
+      "expectedResults": 3,
+      "highlightFeatures": ["emerging_tech", "iot_specific"],
+      "explanation": "'iot' → 'internet of things', 'connected devices', 'smart devices'. Track IoT procurement opportunities.",
+      "educationalValue": "Demonstrates IoT tender discovery"
+    },
+    {
+      "id": "demo_emerging_quantum",
+      "name": "Emerging: Quantum Computing (NEW)",
+      "category": "emerging",
+      "keyword": "quantum",
+      "filters": {},
+      "expectedResults": 1,
+      "highlightFeatures": ["future_tech", "advanced_tech"],
+      "explanation": "NEW: Cutting-edge - 'quantum' → 'quantum computing', 'quantum cryptography', 'quantum technology'.",
+      "educationalValue": "Shows future technology monitoring"
+    },
+    {
+      "id": "demo_filter_precision",
+      "name": "Advanced: Filter Combination",
+      "keyword": "cloud",
+      "filters": {
+        "serviceCategories": ["cloud"],
+        "regions": ["north"],
+        "valueRanges": ["10000000-50000000"]
+      },
+      "expectedResults": 3,
+      "highlightFeatures": ["advanced_filtering", "precision_targeting"],
+      "explanation": "Combine filters for precision: Cloud services in Northern India worth ₹1-5 Crore. From 18 results to 3 perfect matches.",
+      "educationalValue": "Demonstrates filter precision and targeting"
+    },
+    {
+      "id": "demo_similarity_comparison",
+      "name": "Advanced: Similarity Thresholds",
+      "keyword": "security",
+      "filters": {},
+      "expectedResults": 12,
+      "highlightFeatures": ["similarity_control", "bm25_ranking"],
+      "explanation": "Control match quality with similarity threshold: 0% = all matches, 50% = moderate, 100% = exact. BM25 algorithm ranks by relevance.",
+      "educationalValue": "Shows precision vs recall trade-offs",
+      "variations": [
+        {"threshold": 0, "expectedResults": 12, "label": "All Matches"},
+        {"threshold": 50, "expectedResults": 8, "label": "Moderate Quality"},
+        {"threshold": 70, "expectedResults": 5, "label": "High Quality"},
+        {"threshold": 90, "expectedResults": 2, "label": "Near Exact"}
+      ]
+    }
+  ],
+  
+  "demoCategories": {
+    "networking": {
+      "label": "Networking & Connectivity",
+      "icon": "🌐",
+      "scenarios": ["demo_networking_lan", "demo_networking_vpn"]
+    },
+    "cloud": {
+      "label": "Cloud & API Services",
+      "icon": "☁️",
+      "scenarios": ["demo_cloud_api", "demo_cloud_aws"]
+    },
+    "security": {
+      "label": "Security Solutions",
+      "icon": "🔐",
+      "scenarios": ["demo_security_iam", "demo_security_firewall", "demo_security_waf"]
+    },
+    "database": {
+      "label": "Database Systems",
+      "icon": "💾",
+      "scenarios": ["demo_database_sql", "demo_database_mongodb"]
+    },
+    "ai_ml": {
+      "label": "AI & Machine Learning",
+      "icon": "🤖",
+      "scenarios": ["demo_ai_ml", "demo_ai_genai"]
+    },
+    "government": {
+      "label": "Government Procurement (NEW)",
+      "icon": "🏛️",
+      "scenarios": ["demo_gov_rfp", "demo_gov_gem", "demo_gov_aoc"]
+    },
+    "emerging": {
+      "label": "Emerging Technologies (NEW)",
+      "icon": "🚀",
+      "scenarios": ["demo_emerging_blockchain", "demo_emerging_iot", "demo_emerging_quantum"]
+    },
+    "advanced": {
+      "label": "Advanced Features",
+      "icon": "⚙️",
+      "scenarios": ["demo_filter_precision", "demo_similarity_comparison"]
+    }
+  },
+  
+  "demoMessages": {
+    "welcome": "Welcome to TenderIntel Demo! This guided tour showcases our intelligent search capabilities including keyword expansion, zero false positives, and competitive intelligence features.",
+    "step_complete": "Step complete! Moving to next demonstration...",
+    "tour_complete": "🎉 Demo Complete! You've seen TenderIntel's key features:\n✅ 266+ keyword expansions\n✅ Zero false positives\n✅ Domain classification\n✅ Government terms\n✅ Advanced filtering\n✅ Similarity control",
+    "pause_message": "Demo paused. Click 'Resume' to continue or explore results.",
+    "cached_data_note": "Using cached demo data for instant display. Live searches available anytime."
+  },
+  
+  "configuration": {
+    "auto_advance_delay_ms": 3000,
+    "explanation_duration_ms": 5000,
+    "highlight_fade_ms": 500,
+    "tour_completion_celebration": true,
+    "track_demo_analytics": true,
+    "allow_demo_interruption": true,
+    "restore_state_after_demo": true
+  }
+}

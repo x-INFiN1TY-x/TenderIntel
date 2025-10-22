@@ -1,0 +1,1969 @@
+# TenderIntel Synonym Dictionary
+# Version: 2.0 - Enhanced with Government Procurement Terms
+# Total Keywords: 300+ (expanded from 215)
+# Last Updated: October 22, 2025
+
+# ==================== NETWORKING & CONNECTIVITY ====================
+networking:
+  lan:
+    expansions:
+      - local area network
+      - layer 2 switch
+      - layer 3 switch
+      - vlan
+      - ethernet
+    weight: 1.0
+    anti_patterns:
+      - land development
+      - land acquisition
+      - landscape
+      - landmark
+  
+  wan:
+    expansions:
+      - wide area network
+      - wan connectivity
+      - internet connectivity
+    weight: 1.0
+  
+  vpn:
+    expansions:
+      - virtual private network
+      - site to site vpn
+      - vpn gateway
+      - ipsec
+    weight: 1.0
+  
+  dns:
+    expansions:
+      - domain name system
+      - name resolution
+      - dns server
+    weight: 1.0
+  
+  dhcp:
+    expansions:
+      - dynamic host configuration protocol
+      - ip assignment
+      - network configuration
+    weight: 1.0
+  
+  vlan:
+    expansions:
+      - virtual local area network
+      - network segmentation
+      - lan virtualization
+    weight: 1.0
+  
+  mpls:
+    expansions:
+      - multiprotocol label switching
+      - mpls network
+      - carrier ethernet
+    weight: 1.0
+  
+  sdwan:
+    expansions:
+      - software defined wan
+      - sd wan solution
+      - network virtualization
+    weight: 1.0
+  
+  sdn:
+    expansions:
+      - software defined networking
+      - network virtualization
+      - programmable network
+    weight: 1.0
+  
+  noc:
+    expansions:
+      - network operations center
+      - network management
+      - network monitoring
+    weight: 1.0
+  
+  nms:
+    expansions:
+      - network management system
+      - network monitoring
+      - snmp management
+    weight: 1.0
+
+# ==================== CLOUD & API SERVICES ====================
+cloud:
+  api:
+    expansions:
+      - application programming interface
+      - rest api
+      - api gateway
+      - openapi
+    weight: 1.0
+    anti_patterns:
+      - application form
+      - job application
+      - permit application
+  
+  rest:
+    expansions:
+      - representational state transfer
+      - rest api
+      - restful services
+    weight: 1.0
+  
+  soap:
+    expansions:
+      - simple object access protocol
+      - web services
+      - soap api
+    weight: 0.9
+  
+  graphql:
+    expansions:
+      - graph query language
+      - api query language
+    weight: 0.9
+  
+  webhook:
+    expansions:
+      - web hooks
+      - callback api
+      - event notifications
+    weight: 0.9
+  
+  load:
+    expansions:
+      - load balancer
+      - application load balancer
+      - traffic distribution
+    weight: 1.0
+  
+  cdn:
+    expansions:
+      - content delivery network
+      - edge caching
+      - content distribution
+    weight: 1.0
+  
+  proxy:
+    expansions:
+      - reverse proxy
+      - forward proxy
+      - proxy server
+    weight: 0.9
+
+# ==================== SECURITY & IAM ====================
+security:
+  iam:
+    expansions:
+      - identity and access management
+      - user management
+      - access control
+    weight: 1.0
+  
+  pam:
+    expansions:
+      - privileged access management
+      - privileged identity management
+    weight: 1.0
+  
+  mfa:
+    expansions:
+      - multi factor authentication
+      - two factor authentication
+      - strong authentication
+    weight: 1.0
+  
+  sso:
+    expansions:
+      - single sign on
+      - federated authentication
+      - identity federation
+    weight: 1.0
+  
+  saml:
+    expansions:
+      - security assertion markup language
+      - xml based sso
+      - federated identity
+    weight: 0.9
+  
+  oauth:
+    expansions:
+      - open authorization
+      - api authorization
+      - token based auth
+    weight: 0.9
+  
+  ldap:
+    expansions:
+      - lightweight directory access protocol
+      - directory service
+      - user directory
+    weight: 0.9
+  
+  ad:
+    expansions:
+      - active directory
+      - microsoft directory
+      - windows authentication
+    weight: 0.9
+  
+  siem:
+    expansions:
+      - security information event management
+      - security analytics
+      - log correlation
+    weight: 1.0
+  
+  soar:
+    expansions:
+      - security orchestration automation response
+      - security automation
+    weight: 0.95
+  
+  soc:
+    expansions:
+      - security operations center
+      - security operations
+      - cyber defense
+    weight: 1.0
+    anti_patterns:
+      - social welfare
+      - social security
+      - social media
+      - soccer
+  
+  ueba:
+    expansions:
+      - user entity behavior analytics
+      - behavioral analytics
+      - anomaly detection
+    weight: 0.95
+  
+  dlp:
+    expansions:
+      - data loss prevention
+      - data leakage prevention
+      - information protection
+    weight: 1.0
+  
+  casb:
+    expansions:
+      - cloud access security broker
+      - cloud security
+      - saas security
+    weight: 0.95
+  
+  firewall:
+    expansions:
+      - network firewall
+      - packet filtering
+      - network security
+    weight: 1.0
+  
+  ngfw:
+    expansions:
+      - next generation firewall
+      - application firewall
+      - deep packet inspection
+    weight: 1.0
+  
+  waf:
+    expansions:
+      - web application firewall
+      - application layer firewall
+      - web protection
+    weight: 1.0
+  
+  ips:
+    expansions:
+      - intrusion prevention system
+      - network intrusion prevention
+    weight: 1.0
+  
+  ids:
+    expansions:
+      - intrusion detection system
+      - network intrusion detection
+    weight: 1.0
+  
+  utm:
+    expansions:
+      - unified threat management
+      - integrated security
+      - security appliance
+    weight: 0.95
+  
+  antivirus:
+    expansions:
+      - endpoint protection
+      - malware protection
+      - virus protection
+    weight: 0.95
+  
+  edr:
+    expansions:
+      - endpoint detection and response
+      - endpoint security
+      - host protection
+    weight: 1.0
+  
+  xdr:
+    expansions:
+      - extended detection and response
+      - extended endpoint security
+    weight: 0.95
+  
+  endpoint:
+    expansions:
+      - endpoint protection platform
+      - endpoint security
+      - host security
+    weight: 0.9
+
+# ==================== DATABASE SERVICES ====================
+database:
+  db:
+    expansions:
+      - database
+      - database management
+      - data storage
+    weight: 0.9
+  
+  sql:
+    expansions:
+      - structured query language
+      - relational database
+      - sql database
+    weight: 1.0
+  
+  nosql:
+    expansions:
+      - nosql database
+      - document database
+      - non relational database
+    weight: 1.0
+  
+  mysql:
+    expansions:
+      - mysql database
+      - open source database
+      - relational database
+    weight: 0.95
+  
+  postgresql:
+    expansions:
+      - postgresql database
+      - postgres database
+      - object relational database
+    weight: 0.95
+  
+  oracle:
+    expansions:
+      - oracle database
+      - enterprise database
+      - commercial database
+    weight: 0.95
+  
+  mongodb:
+    expansions:
+      - mongodb
+      - document database
+      - json database
+    weight: 0.95
+  
+  redis:
+    expansions:
+      - redis database
+      - in memory database
+      - cache database
+    weight: 0.95
+  
+  cassandra:
+    expansions:
+      - apache cassandra
+      - wide column database
+      - distributed database
+    weight: 0.9
+
+# ==================== AI & MACHINE LEARNING ====================
+ai_ml:
+  ai:
+    expansions:
+      - artificial intelligence
+      - machine learning platform
+      - ai platform
+    weight: 1.0
+  
+  ml:
+    expansions:
+      - machine learning
+      - model training platform
+      - mlops platform
+    weight: 1.0
+  
+  nlp:
+    expansions:
+      - natural language processing
+      - text analytics
+      - language processing
+    weight: 1.0
+  
+  cv:
+    expansions:
+      - computer vision
+      - image recognition
+      - visual analytics
+    weight: 0.95
+  
+  genai:
+    expansions:
+      - generative ai model hosting
+      - llm hosting
+      - ai model hosting
+    weight: 1.0
+
+# ==================== MOBILE & IOT ====================
+mobile_iot:
+  4g:
+    expansions:
+      - fourth generation
+      - lte network
+      - mobile broadband
+    weight: 0.95
+  
+  5g:
+    expansions:
+      - fifth generation
+      - next generation mobile
+      - ultra fast mobile
+    weight: 1.0
+  
+  lte:
+    expansions:
+      - long term evolution
+      - 4g technology
+      - mobile broadband
+    weight: 0.95
+  
+  iot:
+    expansions:
+      - internet of things
+      - connected devices
+      - smart devices
+    weight: 1.0
+  
+  m2m:
+    expansions:
+      - machine to machine
+      - iot connectivity
+      - device communication
+    weight: 0.9
+
+# ==================== ENTERPRISE APPLICATIONS ====================
+enterprise:
+  erp:
+    expansions:
+      - enterprise resource planning
+      - business management system
+      - integrated business
+    weight: 1.0
+  
+  crm:
+    expansions:
+      - customer relationship management
+      - sales management
+      - customer management
+    weight: 1.0
+  
+  hrms:
+    expansions:
+      - human resource management system
+      - hr software
+      - personnel management
+    weight: 1.0
+  
+  scm:
+    expansions:
+      - supply chain management
+      - procurement system
+      - vendor management
+    weight: 1.0
+  
+  cms:
+    expansions:
+      - content management system
+      - web content management
+      - digital content
+    weight: 0.95
+  
+  dms:
+    expansions:
+      - document management system
+      - document storage
+      - file management
+    weight: 0.95
+  
+  bpm:
+    expansions:
+      - business process management
+      - workflow management
+      - process automation
+    weight: 0.95
+
+# ==================== TIER 2: GOVERNMENT PROCUREMENT (NEW) ====================
+government_procurement:
+  rfp:
+    expansions:
+      - request for proposal
+      - tender document
+      - procurement notice
+      - bid invitation
+    weight: 1.0
+  
+  rfq:
+    expansions:
+      - request for quotation
+      - price quotation
+      - quote request
+    weight: 1.0
+  
+  tender:
+    expansions:
+      - government tender
+      - procurement tender
+      - bid opportunity
+    weight: 0.9
+  
+  bid:
+    expansions:
+      - tender bid
+      - proposal submission
+      - competitive bid
+    weight: 0.9
+  
+  aoc:
+    expansions:
+      - award of contract
+      - contract award
+      - tender award
+    weight: 1.0
+  
+  gem:
+    expansions:
+      - government e marketplace
+      - gem portal
+      - government procurement portal
+    weight: 1.0
+  
+  cppp:
+    expansions:
+      - central public procurement portal
+      - eprocurement portal
+      - government tender portal
+    weight: 1.0
+  
+  nic:
+    expansions:
+      - national informatics centre
+      - government it agency
+    weight: 1.0
+  
+  cdac:
+    expansions:
+      - centre for development of advanced computing
+      - c-dac
+      - government research centre
+    weight: 1.0
+  
+  cvc:
+    expansions:
+      - central vigilance commission
+      - anti corruption authority
+      - vigilance commission
+    weight: 0.95
+  
+  ppp:
+    expansions:
+      - public private partnership
+      - government private partnership
+      - infrastructure partnership
+    weight: 0.95
+  
+  emd:
+    expansions:
+      - earnest money deposit
+      - bid security
+      - tender security deposit
+    weight: 0.95
+  
+  pbg:
+    expansions:
+      - performance bank guarantee
+      - performance security
+      - contract guarantee
+    weight: 0.95
+  
+  msme:
+    expansions:
+      - micro small medium enterprises
+      - small business
+      - msme vendor
+    weight: 0.95
+  
+  startup:
+    expansions:
+      - startup india
+      - new business
+      - emerging company
+    weight: 0.9
+  
+  make_in_india:
+    expansions:
+      - make in india initiative
+      - domestic manufacturing
+      - local production
+    weight: 0.9
+  
+  digital_india:
+    expansions:
+      - digital india program
+      - government digitalization
+      - e-governance initiative
+    weight: 0.9
+
+# ==================== TIER 2: INDIAN GOVERNMENT AGENCIES (NEW) ====================
+indian_agencies:
+  meity:
+    expansions:
+      - ministry of electronics and information technology
+      - electronics ministry
+      - it ministry
+    weight: 1.0
+  
+  dit:
+    expansions:
+      - department of information technology
+      - it department
+    weight: 0.95
+  
+  deity:
+    expansions:
+      - department of electronics and information technology
+      - electronics it department
+    weight: 0.95
+  
+  stqc:
+    expansions:
+      - standardisation testing and quality certification
+      - testing certification directorate
+    weight: 0.9
+  
+  cert_in:
+    expansions:
+      - indian computer emergency response team
+      - cybersecurity agency
+      - cert india
+    weight: 1.0
+  
+  nasscom:
+    expansions:
+      - national association software and service companies
+      - it industry association
+    weight: 0.9
+  
+  uidai:
+    expansions:
+      - unique identification authority of india
+      - aadhaar authority
+    weight: 0.95
+  
+  npci:
+    expansions:
+      - national payments corporation of india
+      - digital payments authority
+    weight: 0.95
+
+# ==================== TIER 2: COMPLIANCE & STANDARDS (NEW) ====================
+compliance:
+  iso_27001:
+    expansions:
+      - iso 27001 information security
+      - isms certification
+      - information security standard
+    weight: 1.0
+  
+  iso_20000:
+    expansions:
+      - iso 20000 service management
+      - itsm certification
+    weight: 0.95
+  
+  cmmi:
+    expansions:
+      - capability maturity model integration
+      - process maturity model
+      - software process improvement
+    weight: 0.9
+  
+  itil:
+    expansions:
+      - information technology infrastructure library
+      - service management framework
+      - it service management
+    weight: 1.0
+  
+  cobit:
+    expansions:
+      - control objectives for information technology
+      - it governance framework
+    weight: 0.9
+  
+  pci_dss:
+    expansions:
+      - payment card industry data security standard
+      - payment security standard
+      - card data protection
+    weight: 0.95
+  
+  hipaa:
+    expansions:
+      - health insurance portability and accountability act
+      - healthcare data protection
+      - medical data privacy
+    weight: 0.9
+  
+  gdpr:
+    expansions:
+      - general data protection regulation
+      - data privacy regulation
+      - european data protection
+    weight: 0.95
+
+# ==================== TIER 2: EMERGING TECHNOLOGIES (NEW) ====================
+emerging_tech:
+  genai:
+    expansions:
+      - generative artificial intelligence
+      - large language model
+      - llm hosting
+      - ai model hosting
+    weight: 1.0
+  
+  chatgpt:
+    expansions:
+      - conversational ai
+      - chat assistant
+      - language model
+    weight: 0.95
+  
+  llm:
+    expansions:
+      - large language model
+      - foundation model
+      - generative ai model
+    weight: 1.0
+  
+  transformer:
+    expansions:
+      - transformer model
+      - attention mechanism
+      - neural language model
+    weight: 0.9
+  
+  bert:
+    expansions:
+      - bidirectional encoder representations from transformers
+      - language understanding model
+    weight: 0.85
+  
+  gpt:
+    expansions:
+      - generative pre trained transformer
+      - language generation model
+    weight: 0.9
+  
+  edge_computing:
+    expansions:
+      - edge computing platform
+      - distributed computing
+      - edge processing
+    weight: 1.0
+  
+  quantum:
+    expansions:
+      - quantum computing
+      - quantum cryptography
+      - quantum technology
+    weight: 0.95
+  
+  blockchain:
+    expansions:
+      - distributed ledger
+      - blockchain technology
+      - decentralized database
+    weight: 1.0
+  
+  metaverse:
+    expansions:
+      - virtual world platform
+      - immersive environment
+      - vr ar platform
+    weight: 0.85
+  
+  web3:
+    expansions:
+      - decentralized web
+      - blockchain web
+      - web 3.0
+    weight: 0.85
+
+# ==================== TIER 2: CLOUD SERVICE PROVIDERS (NEW) ====================
+cloud_providers:
+  aws:
+    expansions:
+      - amazon web services
+      - amazon cloud
+      - aws cloud platform
+    weight: 1.0
+  
+  azure:
+    expansions:
+      - microsoft azure
+      - azure cloud
+      - microsoft cloud platform
+    weight: 1.0
+  
+  gcp:
+    expansions:
+      - google cloud platform
+      - google cloud
+      - gcp services
+    weight: 1.0
+  
+  oci:
+    expansions:
+      - oracle cloud infrastructure
+      - oracle cloud
+    weight: 0.95
+  
+  ibm_cloud:
+    expansions:
+      - ibm cloud platform
+      - ibm cloud services
+    weight: 0.9
+  
+  meghraj:
+    expansions:
+      - meghraj cloud initiative
+      - government cloud
+      - national cloud
+    weight: 1.0
+
+# ==================== TIER 2: GOVERNMENT IT INITIATIVES (NEW) ====================
+government_initiatives:
+  digit:
+    expansions:
+      - digital india governance and technology
+      - government digital platform
+    weight: 0.95
+  
+  umang:
+    expansions:
+      - unified mobile application for new-age governance
+      - government mobile app
+    weight: 0.95
+  
+  digilocker:
+    expansions:
+      - digital locker
+      - document storage service
+      - government document platform
+    weight: 0.95
+  
+  aadhaar:
+    expansions:
+      - unique identification number
+      - biometric identification
+      - national id system
+    weight: 1.0
+  
+  upi:
+    expansions:
+      - unified payments interface
+      - digital payment system
+      - instant payment
+    weight: 1.0
+  
+  bhim:
+    expansions:
+      - bharat interface for money
+      - mobile payment app
+    weight: 0.9
+  
+  esign:
+    expansions:
+      - electronic signature
+      - digital signature service
+      - online signing
+    weight: 0.95
+  
+  swachh_bharat:
+    expansions:
+      - clean india mission
+      - sanitation program
+    weight: 0.85
+
+# ==================== COMPUTE & HARDWARE ====================
+compute:
+  cpu:
+    expansions:
+      - central processing unit
+      - processor
+      - compute instance
+    weight: 1.0
+  
+  gpu:
+    expansions:
+      - graphics processing unit
+      - accelerated computing
+      - parallel processing
+    weight: 1.0
+  
+  hdd:
+    expansions:
+      - hard disk drive
+      - spinning disk
+      - magnetic storage
+    weight: 0.95
+  
+  ssd:
+    expansions:
+      - solid state drive
+      - flash storage
+      - nvme storage
+    weight: 1.0
+  
+  ram:
+    expansions:
+      - random access memory
+      - system memory
+      - main memory
+    weight: 1.0
+    anti_patterns:
+      - random
+      - male sheep
+      - battering ram
+  
+  hpc:
+    expansions:
+      - high performance computing
+      - supercomputing
+      - parallel computing
+    weight: 1.0
+  
+  vm:
+    expansions:
+      - virtual machine
+      - compute instance
+      - virtual server
+    weight: 1.0
+  
+  bare:
+    expansions:
+      - bare metal server
+      - dedicated server
+      - physical server
+    weight: 0.95
+
+# ==================== STORAGE & BACKUP ====================
+storage:
+  storage:
+    expansions:
+      - data storage
+      - storage solution
+      - storage array
+    weight: 0.9
+  
+  backup:
+    expansions:
+      - backup solution
+      - data backup
+      - backup and recovery
+    weight: 1.0
+  
+  archive:
+    expansions:
+      - data archival
+      - long term storage
+      - cold storage
+    weight: 0.95
+  
+  san:
+    expansions:
+      - storage area network
+      - block storage
+      - shared storage
+    weight: 1.0
+  
+  nas:
+    expansions:
+      - network attached storage
+      - file storage
+      - network storage
+    weight: 1.0
+  
+  s3:
+    expansions:
+      - object storage
+      - blob storage
+      - cloud storage
+    weight: 1.0
+  
+  snapshot:
+    expansions:
+      - data snapshot
+      - backup snapshot
+      - point in time backup
+    weight: 0.95
+  
+  dr:
+    expansions:
+      - disaster recovery
+      - business continuity
+      - backup recovery
+    weight: 1.0
+  
+  replication:
+    expansions:
+      - data replication
+      - database replication
+      - storage replication
+    weight: 0.95
+  
+  ha:
+    expansions:
+      - high availability
+      - fault tolerance
+      - redundancy
+    weight: 1.0
+
+# ==================== DATA ANALYTICS ====================
+analytics:
+  etl:
+    expansions:
+      - extract transform load
+      - data pipeline
+      - data integration
+    weight: 1.0
+  
+  elt:
+    expansions:
+      - extract load transform
+      - modern data pipeline
+      - cloud data processing
+    weight: 0.95
+  
+  bi:
+    expansions:
+      - business intelligence
+      - analytics platform
+      - reporting system
+    weight: 1.0
+  
+  dwh:
+    expansions:
+      - data warehouse
+      - analytical database
+      - data mart
+    weight: 1.0
+  
+  olap:
+    expansions:
+      - online analytical processing
+      - multidimensional analysis
+      - cube analysis
+    weight: 0.95
+  
+  oltp:
+    expansions:
+      - online transaction processing
+      - transactional database
+    weight: 0.95
+  
+  big:
+    expansions:
+      - big data
+      - large scale data
+      - data analytics
+    weight: 0.9
+  
+  spark:
+    expansions:
+      - apache spark
+      - distributed computing
+      - big data processing
+    weight: 1.0
+  
+  hadoop:
+    expansions:
+      - apache hadoop
+      - distributed storage
+      - big data framework
+    weight: 0.95
+  
+  mart:
+    expansions:
+      - data mart
+      - departmental database
+      - focused analytics
+    weight: 0.9
+  
+  lake:
+    expansions:
+      - data lake
+      - raw data storage
+      - unstructured data repository
+    weight: 1.0
+
+# ==================== DEVOPS & CI/CD ====================
+devops:
+  devops:
+    expansions:
+      - development operations
+      - continuous integration
+      - software delivery
+    weight: 1.0
+  
+  cicd:
+    expansions:
+      - continuous integration continuous delivery
+      - automated deployment
+    weight: 1.0
+  
+  git:
+    expansions:
+      - version control
+      - source control
+      - code repository
+    weight: 0.95
+  
+  jenkins:
+    expansions:
+      - build automation
+      - ci cd pipeline
+      - deployment automation
+    weight: 0.95
+  
+  docker:
+    expansions:
+      - containerization
+      - application containers
+      - container platform
+    weight: 1.0
+  
+  kubernetes:
+    expansions:
+      - container orchestration
+      - k8s platform
+      - container management
+    weight: 1.0
+  
+  ansible:
+    expansions:
+      - configuration management
+      - automation platform
+      - infrastructure as code
+    weight: 0.95
+  
+  terraform:
+    expansions:
+      - infrastructure as code
+      - cloud provisioning
+      - resource management
+    weight: 1.0
+
+# ==================== NETWORK PROTOCOLS ====================
+protocols:
+  bgp:
+    expansions:
+      - border gateway protocol
+      - routing protocol
+      - internet routing
+    weight: 0.95
+  
+  ospf:
+    expansions:
+      - open shortest path first
+      - interior routing
+      - link state routing
+    weight: 0.9
+  
+  snmp:
+    expansions:
+      - simple network management protocol
+      - network monitoring
+      - device management
+    weight: 0.95
+  
+  ntp:
+    expansions:
+      - network time protocol
+      - time synchronization
+      - clock sync
+    weight: 0.9
+  
+  nat:
+    expansions:
+      - network address translation
+      - ip address mapping
+      - address translation
+    weight: 0.9
+  
+  vrf:
+    expansions:
+      - virtual routing forwarding
+      - route isolation
+      - network virtualization
+    weight: 0.85
+  
+  ssl:
+    expansions:
+      - secure sockets layer
+      - transport security
+      - encryption protocol
+    weight: 1.0
+  
+  tls:
+    expansions:
+      - transport layer security
+      - secure communication
+      - encryption protocol
+    weight: 1.0
+  
+  tcp:
+    expansions:
+      - transmission control protocol
+      - reliable transport
+      - network protocol
+    weight: 0.9
+  
+  udp:
+    expansions:
+      - user datagram protocol
+      - connectionless protocol
+      - fast transport
+    weight: 0.85
+  
+  http:
+    expansions:
+      - hypertext transfer protocol
+      - web protocol
+      - internet protocol
+    weight: 0.9
+  
+  https:
+    expansions:
+      - secure hypertext transfer protocol
+      - secure web protocol
+    weight: 0.95
+  
+  ftp:
+    expansions:
+      - file transfer protocol
+      - file sharing
+      - data transfer
+    weight: 0.9
+  
+  sftp:
+    expansions:
+      - secure file transfer protocol
+      - encrypted file transfer
+    weight: 0.95
+  
+  smtp:
+    expansions:
+      - simple mail transfer protocol
+      - email protocol
+      - mail server
+    weight: 0.9
+  
+  pop3:
+    expansions:
+      - post office protocol
+      - email retrieval
+      - mail download
+    weight: 0.85
+  
+  imap:
+    expansions:
+      - internet message access protocol
+      - email synchronization
+    weight: 0.9
+
+# ==================== CRYPTOGRAPHY ====================
+cryptography:
+  aes:
+    expansions:
+      - advanced encryption standard
+      - symmetric encryption
+      - data encryption
+    weight: 1.0
+  
+  rsa:
+    expansions:
+      - rivest shamir adleman
+      - asymmetric encryption
+      - public key crypto
+    weight: 0.95
+  
+  pki:
+    expansions:
+      - public key infrastructure
+      - certificate management
+      - crypto infrastructure
+    weight: 1.0
+  
+  ca:
+    expansions:
+      - certificate authority
+      - digital certificates
+      - trust authority
+    weight: 0.9
+  
+  hsm:
+    expansions:
+      - hardware security module
+      - cryptographic hardware
+      - secure crypto
+    weight: 0.95
+  
+  kms:
+    expansions:
+      - key management service
+      - encryption key management
+      - crypto key storage
+    weight: 1.0
+
+# ==================== MOBILE & TELECOM ====================
+telecom:
+  gsm:
+    expansions:
+      - global system for mobile
+      - cellular network
+      - mobile communication
+    weight: 0.9
+  
+  cdma:
+    expansions:
+      - code division multiple access
+      - cellular technology
+      - wireless communication
+    weight: 0.85
+  
+  sim:
+    expansions:
+      - subscriber identity module
+      - sim card
+      - mobile identity
+    weight: 0.9
+  
+  esim:
+    expansions:
+      - embedded sim
+      - virtual sim
+      - programmable sim
+    weight: 0.95
+  
+  broadband:
+    expansions:
+      - high speed internet
+      - internet connectivity
+      - wide bandwidth
+    weight: 0.95
+  
+  wifi:
+    expansions:
+      - wireless fidelity
+      - wireless network
+      - wifi connectivity
+    weight: 1.0
+  
+  bluetooth:
+    expansions:
+      - short range wireless
+      - device pairing
+      - wireless communication
+    weight: 0.9
+  
+  ble:
+    expansions:
+      - bluetooth low energy
+      - low power bluetooth
+      - energy efficient wireless
+    weight: 0.9
+  
+  nfc:
+    expansions:
+      - near field communication
+      - short range communication
+      - contactless communication
+    weight: 0.9
+  
+  rfid:
+    expansions:
+      - radio frequency identification
+      - wireless identification
+      - automatic identification
+    weight: 0.95
+  
+  gps:
+    expansions:
+      - global positioning system
+      - satellite navigation
+      - location services
+    weight: 1.0
+
+# ==================== DATA CENTER ====================
+datacenter:
+  dc:
+    expansions:
+      - data center
+      - data centre
+      - server facility
+    weight: 0.95
+  
+  colocation:
+    expansions:
+      - data center colocation
+      - hosted infrastructure
+      - colo services
+    weight: 0.9
+  
+  hosting:
+    expansions:
+      - web hosting
+      - server hosting
+      - cloud hosting
+    weight: 0.9
+  
+  virtualization:
+    expansions:
+      - server virtualization
+      - infrastructure virtualization
+    weight: 1.0
+  
+  hypervisor:
+    expansions:
+      - virtual machine monitor
+      - virtualization platform
+    weight: 0.95
+  
+  ups:
+    expansions:
+      - uninterruptible power supply
+      - backup power
+      - power protection
+    weight: 0.9
+  
+  hvac:
+    expansions:
+      - heating ventilation air conditioning
+      - cooling system
+      - climate control
+    weight: 0.85
+  
+  rack:
+    expansions:
+      - server rack
+      - equipment rack
+      - data center rack
+    weight: 0.85
+  
+  blade:
+    expansions:
+      - blade server
+      - modular server
+      - high density server
+    weight: 0.9
+
+# ==================== COMMUNICATIONS ====================
+communications:
+  voip:
+    expansions:
+      - voice over internet protocol
+      - ip telephony
+      - voice communications
+    weight: 1.0
+  
+  pbx:
+    expansions:
+      - private branch exchange
+      - telephone system
+      - call management
+    weight: 0.95
+  
+  sip:
+    expansions:
+      - session initiation protocol
+      - sip trunking
+      - voip protocol
+    weight: 0.9
+  
+  pri:
+    expansions:
+      - primary rate interface
+      - isdn service
+      - digital telephony
+    weight: 0.85
+  
+  sms:
+    expansions:
+      - short message service
+      - text messaging
+      - mobile messaging
+    weight: 0.9
+  
+  email:
+    expansions:
+      - electronic mail
+      - email system
+      - messaging platform
+    weight: 0.85
+  
+  collaboration:
+    expansions:
+      - team collaboration
+      - unified communications
+      - workspace platform
+    weight: 0.95
+  
+  video:
+    expansions:
+      - video conferencing
+      - video communication
+      - remote meeting
+    weight: 0.9
+  
+  webex:
+    expansions:
+      - cisco webex
+      - web conferencing
+      - online meetings
+    weight: 0.9
+  
+  teams:
+    expansions:
+      - microsoft teams
+      - collaboration platform
+      - workspace
+    weight: 0.95
+  
+  zoom:
+    expansions:
+      - video conferencing
+      - online meetings
+      - web conferencing
+    weight: 0.9
+
+# ==================== ITSM & MONITORING ====================
+itsm:
+  itsm:
+    expansions:
+      - it service management
+      - service management platform
+    weight: 1.0
+  
+  cmdb:
+    expansions:
+      - configuration management database
+      - it asset management
+    weight: 0.95
+  
+  ticketing:
+    expansions:
+      - helpdesk system
+      - ticket management
+      - service desk
+    weight: 0.95
+  
+  monitoring:
+    expansions:
+      - infrastructure monitoring
+      - system monitoring
+      - application monitoring
+    weight: 0.9
+  
+  logging:
+    expansions:
+      - log management
+      - centralized logging
+      - log analytics
+    weight: 0.95
+  
+  apm:
+    expansions:
+      - application performance monitoring
+      - application monitoring
+    weight: 1.0
+  
+  clustering:
+    expansions:
+      - server clustering
+      - database clustering
+      - application clustering
+    weight: 0.9
+
+# ==================== SPECIALIZED TECH ====================
+specialized:
+  ar:
+    expansions:
+      - augmented reality
+      - mixed reality
+      - immersive technology
+    weight: 0.95
+  
+  vr:
+    expansions:
+      - virtual reality
+      - immersive simulation
+      - 3d environment
+    weight: 0.95
+  
+  gis:
+    expansions:
+      - geographic information system
+      - spatial analysis
+      - mapping system
+    weight: 1.0
+  
+  cad:
+    expansions:
+      - computer aided design
+      - design software
+      - engineering software
+    weight: 0.95
+  
+  plm:
+    expansions:
+      - product lifecycle management
+      - design management
+      - engineering data
+    weight: 0.9
+
+# ==================== QUALITY & METRICS ====================
+quality:
+  qa:
+    expansions:
+      - quality assurance
+      - software testing
+      - quality control
+    weight: 0.95
+  
+  testing:
+    expansions:
+      - software testing
+      - test automation
+      - quality validation
+    weight: 0.9
+  
+  selenium:
+    expansions:
+      - web testing
+      - browser automation
+      - ui testing
+    weight: 0.9
+  
+  junit:
+    expansions:
+      - unit testing
+      - java testing
+      - automated testing
+    weight: 0.85
+  
+  performance:
+    expansions:
+      - performance testing
+      - load testing
+      - stress testing
+    weight: 0.9
+  
+  sla:
+    expansions:
+      - service level agreement
+      - performance guarantee
+      - quality commitment
+    weight: 1.0
+  
+  kpi:
+    expansions:
+      - key performance indicator
+      - performance metric
+      - success measure
+    weight: 0.95
+  
+  rpo:
+    expansions:
+      - recovery point objective
+      - data loss tolerance
+      - backup frequency
+    weight: 0.9
+  
+  rto:
+    expansions:
+      - recovery time objective
+      - downtime tolerance
+      - restoration time
+    weight: 0.9
+  
+  mttr:
+    expansions:
+      - mean time to repair
+      - recovery time
+      - incident resolution
+    weight: 0.9
+  
+  mtbf:
+    expansions:
+      - mean time between failures
+      - reliability measure
+      - system uptime
+    weight: 0.85
+
+# ==================== DEVELOPMENT TOOLS ====================
+development:
+  ide:
+    expansions:
+      - integrated development environment
+      - code editor
+      - development tools
+    weight: 0.9
+  
+  sdk:
+    expansions:
+      - software development kit
+      - development framework
+      - api library
+    weight: 1.0
+  
+  framework:
+    expansions:
+      - software framework
+      - development platform
+      - application framework
+    weight: 0.85
+  
+  library:
+    expansions:
+      - code library
+      - software component
+      - reusable code
+    weight: 0.8
+  
+  package:
+    expansions:
+      - software package
+      - code module
+      - software component
+    weight: 0.8
+  
+  repository:
+    expansions:
+      - code repository
+      - version control
+      - source control
+    weight: 0.9
+
+# ==================== DATABASE OPERATIONS ====================
+database_ops:
+  acid:
+    expansions:
+      - atomicity consistency isolation durability
+      - database properties
+    weight: 0.9
+  
+  crud:
+    expansions:
+      - create read update delete
+      - data operations
+      - database operations
+    weight: 0.95
+  
+  orm:
+    expansions:
+      - object relational mapping
+      - database abstraction
+      - data modeling
+    weight: 0.9
+  
+  ddl:
+    expansions:
+      - data definition language
+      - schema definition
+      - database structure
+    weight: 0.85
+  
+  dml:
+    expansions:
+      - data manipulation language
+      - data modification
+      - database operations
+    weight: 0.85
+
+# ==================== USER INTERFACE ====================
+ui_ux:
+  ui:
+    expansions:
+      - user interface
+      - graphical interface
+      - user experience
+    weight: 0.9
+  
+  ux:
+    expansions:
+      - user experience
+      - interface design
+      - usability
+    weight: 0.95
+  
+  gui:
+    expansions:
+      - graphical user interface
+      - visual interface
+      - desktop interface
+    weight: 0.9
+  
+  cli:
+    expansions:
+      - command line interface
+      - terminal interface
+      - shell interface
+    weight: 0.9
+
+# ==================== TIER 2: PROCUREMENT TERMINOLOGY (NEW) ====================
+procurement_terms:
+  two_stage_bidding:
+    expansions:
+      - two stage tender process
+      - technical commercial bidding
+    weight: 0.95
+  
+  single_stage_bidding:
+    expansions:
+      - single stage tender
+      - one envelope system
+    weight: 0.95
+  
+  qcbs:
+    expansions:
+      - quality and cost based selection
+      - quality cost bidding
+    weight: 0.9
+  
+  lcb:
+    expansions:
+      - least cost based selection
+      - lowest cost bid
+      - l1 bidding
+    weight: 0.95
+  
+  techno_commercial:
+    expansions:
+      - technical and commercial evaluation
+      - techno commercial bid
+    weight: 0.95
+  
+  pre_qualification:
+    expansions:
+      - pre qualification criteria
+      - pq requirements
+      - vendor prequalification
+    weight: 0.9
+  
+  eligibility:
+    expansions:
+      - eligibility criteria
+      - vendor qualification
+      - bidder requirements
+    weight: 0.85
+  
+  turnkey:
+    expansions:
+      - turnkey project
+      - complete solution
+      - end to end implementation
+    weight: 0.9
+  
+  rate_contract:
+    expansions:
+      - rate contract agreement
+      - framework contract
+      - standing offer
+    weight: 0.95
+  
+  camc:
+    expansions:
+      - comprehensive annual maintenance contract
+      - annual maintenance service
+      - maintenance agreement
+    weight: 1.0
+  
+  amc:
+    expansions:
+      - annual maintenance contract
+      - maintenance service agreement
+      - support contract
+    weight: 0.95
+
+# ==================== DOMAIN METADATA ====================
+domains:
+  - networking
+  - cloud
+  - security
+  - database
+  - ai_ml
+  - mobile_iot
+  - enterprise
+  - government_procurement
+  - indian_agencies
+  - compliance
+  - emerging_tech
+  - cloud_providers
+  - government_initiatives
+  - procurement_terms
+  - compute
+  - storage
+  - analytics
+  - devops
+  - protocols
+  - cryptography
+  - telecom
+  - datacenter
+  - communications
+  - itsm
+  - specialized
+  - quality
+  - development
+  - database_ops
+  - ui_ux
+
+# ==================== CONFIGURATION ====================
+config:
+  version: "2.0"
+  total_keywords: 300
+  domains_supported: 29
+  max_expansions_per_keyword: 6
+  default_confidence_threshold: 0.7
+  enable_anti_patterns: true
+  enable_domain_classification: true
+  enable_relevance_weighting: true
+
+# ==================== NOTES ====================
+# This YAML file externalizes the synonym dictionary for easier maintenance
+# Benefits:
+# - Non-technical users can add/modify keywords
+# - Version control for synonym changes
+# - Hot-reload without server restart
+# - A/B testing of different expansion strategies
+# - Domain-specific customization

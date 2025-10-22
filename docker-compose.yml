@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # TenderIntel API Backend
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: runtime
+    container_name: tenderintel-api
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./data:/app/data:rw
+      - ./config:/app/config:ro
+      - ./downloads:/app/downloads:rw
+    environment:
+      - TENDERINTEL_DB_PATH=/app/data/tenders.db
+      - TENDERINTEL_API_PORT=8002
+      - TENDERINTEL_API_HOST=0.0.0.0
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db-setup
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Web Interface  
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: tenderintel-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # Database Setup (Init Container)
+  db-setup:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: setup
+    container_name: tenderintel-db-setup
+    volumes:
+      - ./data:/app/data:rw
+      - ./config:/app/config:ro
+    environment:
+      - TENDERINTEL_DB_PATH=/app/data/tenders.db
+    command: python scripts/setup/initialize_project.py
+
+volumes:
+  tenderintel_data:
+    driver: local
+  tenderintel_downloads:
+    driver: local
+
+networks:
+  default:
+    name: tenderintel-network

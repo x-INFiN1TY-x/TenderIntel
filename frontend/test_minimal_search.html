@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TenderIntel - Minimal Search Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-gray-100 p-8">
+    
+    <div x-data="minimalSearch()" x-init="init()" class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Minimal Search Test - Debug Results Display</h1>
+        
+        <!-- Search Bar -->
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <div class="flex space-x-4">
+                <input type="text" 
+                       x-model="query"
+                       @keyup.enter="performSearch()"
+                       placeholder="Enter search keyword..."
+                       class="flex-1 px-4 py-2 border rounded-lg">
+                <button @click="performSearch()" 
+                        :disabled="loading"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    <span x-text="loading ? 'Searching...' : 'Search'"></span>
+                </button>
+                <button @click="debugState()" 
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg">
+                    Debug
+                </button>
+            </div>
+            
+            <!-- Debug Info -->
+            <div class="mt-4 text-sm text-gray-600">
+                <div>Query: <span x-text="query"></span></div>
+                <div>Total Results: <span x-text="totalResults"></span></div>
+                <div>Results Array Length: <span x-text="results.length"></span></div>
+                <div>Results Type: <span x-text="typeof results"></span></div>
+                <div>Paginated Length: <span x-text="paginatedResults.length"></span></div>
+            </div>
+        </div>
+        
+        <!-- Results -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-bold mb-4">Results</h2>
+            
+            <div x-show="loading" class="text-center py-8">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                <p class="mt-2">Loading...</p>
+            </div>
+            
+            <div x-show="!loading && totalResults === 0 && query" class="text-center py-8">
+                <p class="text-gray-600">No results found for "<span x-text="query"></span>"</p>
+            </div>
+            
+            <div x-show="!loading && results.length > 0">
+                <p class="mb-4">Found <span x-text="totalResults"></span> results, showing <span x-text="paginatedResults.length"></span></p>
+                
+                <!-- Simple Table -->
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="border border-gray-300 px-4 py-2 text-left">Title</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Organization</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Match %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="(result, index) in paginatedResults" :key="index">
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2" x-text="result.title"></td>
+                                <td class="border border-gray-300 px-4 py-2" x-text="result.organization"></td>
+                                <td class="border border-gray-300 px-4 py-2 text-center" x-text="result.similarity_percent + '%'"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Raw Data Debug -->
+        <div class="mt-6 bg-gray-800 text-white p-4 rounded-lg text-xs">
+            <h3 class="font-bold mb-2">Raw Results Debug:</h3>
+            <pre x-text="JSON.stringify(results, null, 2)"></pre>
+        </div>
+    </div>
+
+    <script>
+        function minimalSearch() {
+            return {
+                query: '',
+                results: [],
+                totalResults: 0,
+                loading: false,
+                
+                get paginatedResults() {
+                    console.log('paginatedResults called, results:', this.results);
+                    return this.results || [];
+                },
+                
+                init() {
+                    console.log('Minimal search initialized');
+                },
+                
+                async performSearch() {
+                    if (!this.query.trim()) return;
+                    
+                    this.loading = true;
+                    console.log('Performing search for:', this.query);
+                    
+                    try {
+                        const response = await fetch(`http://localhost:8002/search?q=${encodeURIComponent(this.query)}&limit=5`);
+                        const data = await response.json();
+                        
+                        console.log('API Response:', data);
+                        
+                        // Process results
+                        this.results = data.hits || [];
+                        this.totalResults = data.total_matches || 0;
+                        
+                        console.log('Processed - results:', this.results);
+                        console.log('Processed - totalResults:', this.totalResults);
+                        
+                    } catch (error) {
+                        console.error('Search failed:', error);
+                        this.results = [];
+                        this.totalResults = 0;
+                    }
+                    
+                    this.loading = false;
+                },
+                
+                debugState() {
+                    console.log('=== DEBUG STATE ===');
+                    console.log('query:', this.query);
+                    console.log('results:', this.results);
+                    console.log('results type:', typeof this.results);
+                    console.log('results is array:', Array.isArray(this.results));
+                    console.log('results length:', this.results?.length);
+                    console.log('totalResults:', this.totalResults);
+                    console.log('paginatedResults:', this.paginatedResults);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
